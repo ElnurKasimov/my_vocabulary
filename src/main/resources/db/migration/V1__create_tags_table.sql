@@ -1,4 +1,4 @@
 CREATE TABLE tags (
-    id BIGINT,
-    name VARCHAR(255)
+    id BIGINT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
 )
