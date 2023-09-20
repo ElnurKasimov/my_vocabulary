@@ -1,6 +1,7 @@
 * {
     box-sizing: border-box;
 }
+
 header {
     background-color: #f1f1f1;
        padding: 5px;
@@ -12,13 +13,6 @@ header {
 a {
     color: gray;
     text-decoration: none;
-}
-
-footer {
-    background-color: #f1f1f1;
-    padding: 10px;
-    text-align: left;
-    color: #666;
 }
 
 .shadowed-button {
