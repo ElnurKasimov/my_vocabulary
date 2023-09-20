@@ -23,6 +23,6 @@ public class Tag {
     @Column (name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "words", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)
     List<Word> words;
 }
