@@ -4,10 +4,26 @@
 
 header {
     background-color: #f1f1f1;
-       padding: 5px;
-       text-align: left;
-       font-size: 35px;
-       color: #666;
+    font-size: 25px; /* Устанавливаем размер шрифта */
+    color: #666; /* Устанавливаем цвет текста */
+    padding: 5px; /* Опционально: добавляем отступы */
+    overflow: auto;
+}
+
+.header-left {
+    float: left; /* Выравниваем влево */
+}
+
+.header-right {
+    float: right; /* Выравниваем вправо */
+}
+
+/* Общие стили для ссылок */
+.header-left a,
+.header-right a {
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+    color: gray; /* Устанавливаем цвет текста ссылок */
+    margin-left: 20px; /* Опционально: добавляем отступы между ссылками */
 }
 
 a {
