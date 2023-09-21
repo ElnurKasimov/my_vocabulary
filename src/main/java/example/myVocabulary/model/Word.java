@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -16,14 +17,14 @@ public class Word {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "The 'word' cannot be null")
-    @NotBlank(message = "The 'word' cannot be empty")
     @Column (name="foreign_word")
+    @NotNull(message = "The 'word' cannot be null")
+    @Size(max = 255, message = "The length shouldn't be more than 255 symbols")
     private String foreignWord;
 
-    @NotNull(message = "The 'translation' cannot be null")
-    @NotBlank(message = "The 'translation' cannot be empty")
     @Column (name="translation_word")
+    @NotNull(message = "The 'translation' cannot be null")
+    @Size(max = 1000, message = "The length shouldn't be more than 1000 symbols")
     private String translationWord;
 
     @NotNull(message = "The 'tag' cannot be null")
