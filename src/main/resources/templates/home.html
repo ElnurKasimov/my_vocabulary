@@ -7,13 +7,32 @@
 </head>
 <body>
     <div th:replace="header :: header"></div>
-    <main>
-        <div class="home">
-
+    <div class="home">
+        <div class="section-1">
+            <div class="row">
+                <div class="left">
+                   <p style="font-size: 30px; color: #666;">List of words</p>
+                </div>
+                <div class="right">
+                    <form th:action="@{/users/create}">
+                        <button type="submit" class="shadowed-button">Create new word</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </main>
-
-
+        <div class="section-2">
+            <div class="row">
+                <div class="left">
+                    <p style="font-size: 30px; color: #666;">List of tags</p>
+                </div>
+                <div class="right">
+                    <form th:action="@{/users/create}">
+                        <button type="submit" class="shadowed-button">Create new tag</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
