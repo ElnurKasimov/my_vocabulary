@@ -33,4 +33,21 @@ public class WordServiceImpl implements WordService {
     public List<Word> getAll() {
         return null;
     }
+
+    @Override
+    public Word readByForeignWord(String foreignWord) {
+        return null;
+    }
+
+    @Override
+    public Word readByTranslation(String translation) {
+        return null;
+    }
+
+    @Override
+    public Word readByWordPart(String wordPart) {
+        return null;
+    }
+
+
 }

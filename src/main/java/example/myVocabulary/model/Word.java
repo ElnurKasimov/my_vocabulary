@@ -6,12 +6,15 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name="words")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter @Setter
 public class Word {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,13 +22,15 @@ public class Word {
 
     @Column (name="foreign_word")
     @NotNull(message = "The 'word' cannot be null")
-    @Size(max = 255, message = "The length shouldn't be more than 255 symbols")
     private String foreignWord;
 
     @Column (name="translation_word")
     @NotNull(message = "The 'translation' cannot be null")
-    @Size(max = 1000, message = "The length shouldn't be more than 1000 symbols")
     private String translationWord;
+
+    @Column (name="description")
+
+    private String description;
 
     @NotNull(message = "The 'tag' cannot be null")
     @ManyToOne
