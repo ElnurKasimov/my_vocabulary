@@ -32,4 +32,8 @@ public class TagServiceImpl implements TagService {
     public List<Tag> getAll() {
         return null;
     }
+
+    public Tag readByName(String name)  {
+        return null;
+    }
 }

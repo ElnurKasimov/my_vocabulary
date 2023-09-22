@@ -9,5 +9,6 @@ public interface TagService {
     Tag update(Tag Tag);
     void delete(long id);
     List<Tag> getAll();
+    Tag readByName(String name);
 
 }
