@@ -1,7 +1,5 @@
 package example.myVocabulary.dto;
 
-import com.softserve.itacademy.todolist.model.User;
-import com.softserve.itacademy.todolist.repository.ToDoRepository;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
