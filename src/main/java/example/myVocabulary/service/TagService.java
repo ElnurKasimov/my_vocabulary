@@ -11,4 +11,7 @@ public interface TagService {
     List<Tag> getAll();
     Tag readByName(String name);
 
+    List<Tag> getTenRandom();
+
+
 }
