@@ -130,11 +130,10 @@ a {
 }
 
 /* Стили для таблицы */
-table {
-  border-collapse: collapse;
-  width: 500px;
+/* table {
+  width: 100%;
   margin-bottom: 20px;
-}
+} */
 
 /* Стили для заголовка таблицы */
 table th {
@@ -149,7 +148,7 @@ table th {
 table td {
   border: 1px solid #ddd;
   padding: 10px;
-  text-align: center;
+  text-align: left;
 }
 
 /* Стили для четных строк */
