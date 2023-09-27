@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
-    <div th:replace="header :: header"></div>
+    <div th:replace="~{header :: header}"></div>
     <div class="home">
         <div class="section-1">
             <div class="row">
@@ -19,7 +19,22 @@
                     </form>
                 </div>
             </div>
-
+            <table style="width : 100%">
+                <tr>
+                    <th>&numero;</th>
+                    <th>Foreign word</th>
+                    <th>Translation</th>
+                    <th>Tag</th>
+                </tr>
+                <tbody>
+                <tr th:each="word, i : ${words}">
+                    <td th:text="${i.index + 1}"></td>
+                    <td th:text="${word.getForeignWord()}"></td>
+                    <td th:text="${word.getTranslationWord()}"></td>
+                    <td th:text="${word.getTagName()}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <div class="section-2">
             <div class="row">

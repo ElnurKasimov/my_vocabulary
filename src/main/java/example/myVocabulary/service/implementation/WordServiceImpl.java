@@ -39,7 +39,8 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public List<Word> getTenRandom() {
-        return wordRepository.findTenRandom();
+        List<Word> result = wordRepository.findTenRandom();
+        return result;
     }
 
     @Override

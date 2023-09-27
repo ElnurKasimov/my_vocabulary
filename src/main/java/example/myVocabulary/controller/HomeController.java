@@ -1,6 +1,7 @@
 package example.myVocabulary.controller;
 
 import example.myVocabulary.dto.TagTransformer;
+import example.myVocabulary.dto.WordResponseForHome;
 import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -19,23 +21,18 @@ public class HomeController {
     private final WordService wordService;
     private final WordTransformer wordTransformer;
 
-    @GetMapping("/home")
+    @GetMapping(value = {"/home", "/"})
     public String getHome(Model model) {
         model.addAttribute("tags",
                 tagService.getTenRandom().stream()
                         .map(tagTransformer::fromEntity)
                         .collect(Collectors.toList()));
+
         model.addAttribute("words",
                 wordService.getTenRandom().stream()
-                        .map(wordTransformer::fromEntity)
+                        .map(wordTransformer::fromEntityForHome)
                         .collect(Collectors.toList()));
         return "home";
     }
 
-    @GetMapping("/")
-    public String getBlank(Model model) {
-        //model.addAttribute("users", userService.getAll());
-
-        return "home";
-    }
 }

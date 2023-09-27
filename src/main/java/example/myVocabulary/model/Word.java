@@ -36,4 +36,15 @@ public class Word {
     @ManyToOne
     @JoinColumn(name="tag_id")
     private Tag tag;
+
+    @Override
+    public String toString() {
+        return "Word{" +
+                "id=" + id +
+                ", foreignWord='" + foreignWord + '\'' +
+                ", translationWord='" + translationWord + '\'' +
+                ", description='" + description + '\'' +
+                ", tag=" + tag +
+                '}';
+    }
 }

@@ -14,7 +14,6 @@ public interface WordRepository extends JpaRepository<Word, Long> {
     @Query("SELECT w FROM Word w WHERE LOWER(w.foreignWord) LIKE %:wordPart% OR LOWER(w.translationWord) LIKE %:wordPart%")
     public List<Word> findByWordPart(@Param("wordPart") String wordPart);
 
-    @Query(value = "SELECT *  FROM words w JOIN tags t " +
-            "WHERE w.tag_id = t.id ORDER BY RAND() LIMIT 10", nativeQuery = true)
+    @Query(value = "SELECT *  FROM words ORDER BY RAND() LIMIT 10", nativeQuery = true)
     public List<Word> findTenRandom();
 }

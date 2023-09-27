@@ -23,11 +23,18 @@ header {
     text-decoration: none; /* Убираем подчеркивание у ссылок */
     color: gray;
     margin-left: 20px;
+    transition: color 0.3s; /* Добавляем анимацию смены цвета */
+}
+
+.header-left a:hover,
+.header-right a:hover {
+    color: #00bfff; /* Цвет текста при наведении мыши на ссылку */
 }
 
 a {
     color: gray;
     text-decoration: none;
+    transition: color 0.3s; /* Добавляем анимацию смены цвета */
 }
 
 .home {
@@ -35,13 +42,13 @@ a {
 }
 
 .section-1 {
-    width: 75%;
-    padding: 10px;
+    width: 70%;
+    padding: 5px 10px;
 }
 
 .section-2 {
-    width: 25%;
-    padding: 10px;
+    width: 30%;
+    padding: 5px 10px;
 }
 
 .row {

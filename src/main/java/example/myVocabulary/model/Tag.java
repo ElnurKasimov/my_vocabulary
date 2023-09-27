@@ -25,4 +25,12 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)
     List<Word> words;
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -20,10 +20,8 @@ public class WordTransformer {
         return word;
     }
 
-    public  WordResponseForHome fromEntity(Word word) {
-        WordResponseForHome wordResponseForHome = new WordResponseForHome();
-
-        return ;
+    public  WordResponseForHome fromEntityForHome(Word word) {
+        return new WordResponseForHome(word);
     }
 
 }
