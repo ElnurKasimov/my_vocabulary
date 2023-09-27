@@ -1,6 +1,7 @@
 package example.myVocabulary.controller;
 
 import example.myVocabulary.dto.TagTransformer;
+import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +17,17 @@ public class HomeController {
     private final TagService tagService;
     private final TagTransformer tagTransformer;
     private final WordService wordService;
+    private final WordTransformer wordTransformer;
 
     @GetMapping("/home")
     public String getHome(Model model) {
         model.addAttribute("tags",
                 tagService.getTenRandom().stream()
                         .map(tagTransformer::fromEntity)
+                        .collect(Collectors.toList()));
+        model.addAttribute("words",
+                wordService.getTenRandom().stream()
+                        .map(wordTransformer::fromEntity)
                         .collect(Collectors.toList()));
         return "home";
     }

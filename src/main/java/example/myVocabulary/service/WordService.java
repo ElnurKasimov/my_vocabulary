@@ -10,7 +10,7 @@ public interface WordService {
     Word update(Word Word);
     void delete(long id);
     List<Word> getAll();
-
+    List<Word> getTenRandom();
     Word readByForeignWord(String foreignWord);
     Word readByTranslation(String translation);
     Word readByWordPart(String wordPart);
