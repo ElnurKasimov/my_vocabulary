@@ -21,8 +21,9 @@ public class WordTransformer {
     }
 
     public  WordResponseForHome fromEntity(Word word) {
+        WordResponseForHome wordResponseForHome = new WordResponseForHome();
 
-        return new WordResponseForHome(word);
+        return ;
     }
 
 }
