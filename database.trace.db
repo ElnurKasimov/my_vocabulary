@@ -376,6 +376,10 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/N200050
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT * FROM tags ORDER BY RAND() [*]LIMIT3"
 Syntax error in SQL statement "SELECT * FROM tags ORDER BY RAND() [*]LIMIT3"; SQL statement:
 SELECT * FROM tags ORDER BY RAND() LIMIT3 [42000-214]
+2023-09-27 17:37:24 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Синтаксическая ошибка в выражении SQL "SELECT w.foreign_word, w.translation_word, t.name  FROM words w JOIN tags t WHERE w.tag_id = t.id [*]ORDER RAND() LIMIT 10"
+Syntax error in SQL statement "SELECT w.foreign_word, w.translation_word, t.name  FROM words w JOIN tags t WHERE w.tag_id = t.id [*]ORDER RAND() LIMIT 10"; SQL statement:
+SELECT w.foreign_word, w.translation_word, t.name  FROM words w JOIN tags t WHERE w.tag_id = t.id ORDER RAND() LIMIT 10 [42000-214]
 2023-09-27 21:29:08 database: flush
 org.h2.message.DbException: Внутренняя ошибка: "org.h2.mvstore.MVStoreException: The write format 2 is smaller than the supported format 3 [2.2.220/5]"
 General error: "org.h2.mvstore.MVStoreException: The write format 2 is smaller than the supported format 3 [2.2.220/5]" [50000-220]
