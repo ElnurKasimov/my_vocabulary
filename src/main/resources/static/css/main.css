@@ -102,9 +102,36 @@ header {
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .standard-button:hover {
-    background-color: #29a3d2;
-    color: white;
+    background-color: #00bfff;
+    color: #666;
 }
+
+.find-form {
+        display: flex;
+        align-items: center;
+    }
+
+.find-form label {
+    font-size: 20px;
+    margin-right: 10px;
+}
+.find-form input {
+    font-family: 'Times New Roman', sans-serif;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 .user-form {
     display: flex;
@@ -173,16 +200,17 @@ table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-/* Стили для ссылок в ячейках */
+/* Стили для ссылок в ячейках
 table a {
   text-decoration: none;
   color: blue;
 }
 
-/* Стили для ссылок при наведении */
+Стили для ссылок при наведении
 table a:hover {
   text-decoration: underline;
 }
+*/
 
 .error {
         color: red;

@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.stream.Collectors;
 
@@ -27,7 +29,25 @@ public class WordController {
                 wordService.getAll().stream()
                         .map(wordTransformer::fromEntityForCRUD)
                         .collect(Collectors.toList()));
-        return "word/word-list";
+        return "word/list";
+    }
+
+    @GetMapping(value = {"/find"})
+    public String getFindWord(Model model) {
+        boolean searchPerformed = false;
+        model.addAttribute("searchPerformed", searchPerformed);
+        return "word/find";
+    }
+    @PostMapping(value = {"/find"})
+    public String postFindWord(@RequestParam("wordPart") String wordPart, Model model) {
+        boolean searchPerformed =  true;
+        model.addAttribute("words",
+                wordService.readByWordPart(wordPart).stream()
+                        .map(wordTransformer::fromEntityForCRUD)
+                        .collect(Collectors.toList()));
+        model.addAttribute("word", wordPart);
+        model.addAttribute("searchPerformed", searchPerformed);
+        return "word/find";
     }
 
 }

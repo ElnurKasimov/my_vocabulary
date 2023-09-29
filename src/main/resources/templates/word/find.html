@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Find the Word</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+    <body>
+        <div th:replace="~{header :: header}"></div>
+        <br>
+        <form th:action="@{/words/find}" method="post" class="find-form">
+            <label for="wordPart">Input your word:</label>
+            <input type="text" id="wordPart" name="wordPart" required>
+            <button type="submit" class="standard-button">Search</button>
+        </form>
+        <th:block th:if="${searchPerformed}">
+            <p style="font-size: 20px;" th:if="${#lists.isEmpty(words)}">
+                There is no word <b>'<span th:text="${word}"></span>'</b> in Your vocabulary.
+            </p>
+            <table style ="width : 100%" th:if="${not #lists.isEmpty(words)}">
+                <p style="font-size: 20px;">
+                    Here are all records which contain the word <b>'<span th:text="${word}"></span>'</b>:
+                </p>
+                <tr>
+                    <th style="width: 20%">Word</th>
+                    <th style="width: 20%">Translation</th>
+                    <th style="width: 40%">Description</th>
+                    <th style="width: 20%">Tag</th>
+                </tr>
+                <tbody>
+                    <tr th:each="word, i : ${words}">
+                        <td th:text="${word.foreignWord}"></td>
+                        <td th:text="${word.translationWord}"></td>
+                        <td th:text="${word.description}"></td>
+                        <td th:text="${word.tagName}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </th:block>
+    </body>
+</html>

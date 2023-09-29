@@ -54,9 +54,8 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public Word readByWordPart(String wordPart) {
-        return null;
+    public List<Word> readByWordPart(String wordPart) {
+        return wordRepository.findByWordPart(wordPart);
     }
-
 
 }

@@ -13,6 +13,6 @@ public interface WordService {
     List<Word> getTenRandom();
     Word readByForeignWord(String foreignWord);
     Word readByTranslation(String translation);
-    Word readByWordPart(String wordPart);
+    List<Word> readByWordPart(String wordPart);
     
 }
