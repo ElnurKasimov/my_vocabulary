@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/tags")
+@RequestMapping("/words")
 @RequiredArgsConstructor
-public class TagController {
+public class WordController {
     private final TagService tagService;
     private final TagTransformer tagTransformer;
     private final WordService wordService;
     private final WordTransformer wordTransformer;
 
     @GetMapping(value = {"/"})
-    public String getAllTags(Model model) {
-        model.addAttribute("tags",
-                tagService.getAll().stream()
-                        .map(tagTransformer::fromEntity)
+    public String getAllWords(Model model) {
+        model.addAttribute("words",
+                wordService.getAll().stream()
+                        .map(wordTransformer::fromEntityForCRUD)
                         .collect(Collectors.toList()));
-        return "tag/tag-list";
+        return "word/word-list";
     }
 
 }

@@ -2,26 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>List of Users</title>
+    <title>List of Tags</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
     <body>
         <div th:replace="~{header :: header}"></div>
         <br>
-        <table>
+        <table style ="width : 40%">
             <tr>
-                <th>&numero;</th>
-                <th>Id</th>
-                <th>Name</th>
-                <th colspan="2">Operations</th>
+                <th style ="width : 10%" >&numero;</th>
+                <th style ="width : 60%">Name</th>
+                <th style ="width : 30%" colspan="2">Operations</th>
             </tr>
             <tbody>
                 <tr th:each="tag, i : ${tags}">
                     <td th:text="${i.index + 1}"></td>
-                    <td th:text="${tag.id}"></td>
-                    <td><a th:href="@{/tags/{id}(id=${tag.id})}"th:text="${tag.Name}"></a></td>
-                    <td><a th:href="@{/tags/{id}/update(id=${tag.id})}">Edit</a></td>
-                    <td><a th:href="@{/tags/{id}/delete(id=${tag.id})}">Remove</a></td>
+                    <td><a th:href="@{/tags/{id}(id=${tag.id})}"th:text="${tag.Name}" class="tag-link"></a></td>
+                    <td><a th:href="@{/tags/{id}/update(id=${tag.id})}" class="tag-link">Edit</a></td>
+                    <td><a th:href="@{/tags/{id}/delete(id=${tag.id})}" class="remove-link">Remove</a></td>
                 </tr>
             </tbody>
         </table>

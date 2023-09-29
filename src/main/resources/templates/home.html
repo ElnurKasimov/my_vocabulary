@@ -55,7 +55,7 @@
                 <tbody>
                 <tr th:each="tag, i : ${tags}">
                     <td th:text="${i.index + 1}"></td>
-                    <td th:text="${tag.getName()}"></td>
+                    <td><a th:href="@{/tags/{id}(id=${tag.id})}"th:text="${tag.Name}" class="tag-link"></a></td>
                 </tr>
                 </tbody>
             </table>

@@ -24,4 +24,8 @@ public class WordTransformer {
         return new WordResponseForHome(word);
     }
 
+    public  WordResponseForCRUD fromEntityForCRUD(Word word) {
+        return new WordResponseForCRUD(word);
+    }
+
 }

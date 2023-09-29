@@ -34,7 +34,7 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public List<Word> getAll() {
-        return null;
+        return wordRepository.findAll();
     }
 
     @Override

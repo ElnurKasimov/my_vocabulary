@@ -28,14 +28,24 @@ header {
 
 .header-left a:hover,
 .header-right a:hover {
-    color: #00bfff; /* Цвет текста при наведении мыши на ссылку */
+    color: #0099ff; /* Цвет текста при наведении мыши на ссылку */
 }
 
-a {
-    color: gray;
+.tag-link {
+    color: #0099ff;
     text-decoration: none;
-    transition: color 0.3s; /* Добавляем анимацию смены цвета */
 }
+
+.remove-link {
+    color: #ff0066;
+    text-decoration: none;
+}
+
+
+.tag-link:hover, .remove-link:hover {
+    text-decoration: none; /* Отключение подчеркивания при наведении */
+}
+
 
 .home {
     display: flex;
@@ -73,7 +83,7 @@ a {
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 .shadowed-button:hover {
-    background-color: #29a3d2;
+    background-color: #0099ff;
     transform: translateY(-3px);
     box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.6);
 }
