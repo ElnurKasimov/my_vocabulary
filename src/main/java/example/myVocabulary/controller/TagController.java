@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.stream.Collectors;
@@ -28,6 +29,16 @@ public class TagController {
                         .map(tagTransformer::fromEntity)
                         .collect(Collectors.toList()));
         return "tag/tag-list";
+    }
+
+    @GetMapping(value = {"/{id}"})
+    public String getAllTags(@PathVariable (name = "id") long id,  Model model) {
+        model.addAttribute("words",
+                tagService.readById(id).getWords().stream()
+                        .map(wordTransformer::fromEntityForCRUD)
+                        .collect(Collectors.toList()));
+        model.addAttribute("tagName", tagService.readById(id).getName());
+        return "tag/tag-words";
     }
 
 }

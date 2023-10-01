@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <title>Error</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<h1>Error info</h1>
+<table>
+    <tr>
+        <th>Date</th>
+        <td th:text="${localDateTime}"></td>
+    </tr>
+    <tr>
+        <th>Error</th>
+        <td th:text="${title}"></td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td th:text="${status}"></td>
+    </tr>
+
+    <tr>
+        <th>Message</th>
+        <td th:text="${message}"></td>
+    </tr>
+
+    <tr>
+        <th>Exception</th>
+        <td th:text="${type}"></td>
+    </tr>
+    <tr th:unless="${stackTrace == null}">
+        <th>Stack Trace</th>
+        <td>
+            <pre th:text="${stackTrace}"></pre>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

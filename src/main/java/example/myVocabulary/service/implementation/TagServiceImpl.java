@@ -1,5 +1,6 @@
 package example.myVocabulary.service.implementation;
 
+import example.myVocabulary.exception.EntityNotFoundException;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.repository.TagRepository;
 import example.myVocabulary.service.TagService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +21,10 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag readById(long id) {
-        return null;
+        Optional<Tag> optional = tagRepository.findById(id);
+        if(optional.isEmpty())
+            throw new EntityNotFoundException("Tag with id: " + id + " does not exist");
+        return optional.get();
     }
 
     @Override
