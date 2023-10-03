@@ -4,36 +4,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.server.ResponseStatusException;
+
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.LocalDateTime;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.NoHandlerFoundException;
-
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
-
 @ControllerAdvice
 public class ApplicationExceptionHandler {
 
     @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleError404(HttpServletRequest request, Exception e) {
         return getModelAndView(request, HttpStatus.NOT_FOUND, e);
     }
@@ -83,10 +66,10 @@ public class ApplicationExceptionHandler {
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         String stackTrace = sw.toString();
-        if( (debugPropertyValue != null && debugPropertyValue.equals("true")) ||
-                (debugEnvValue != null && debugEnvValue.equals("true")) ) {
+//        if( (debugPropertyValue != null && debugPropertyValue.equals("true")) ||
+//                (debugEnvValue != null && debugEnvValue.equals("true")) ) {
             modelAndView.addObject("stackTrace", stackTrace);
-        }
+//        }
         return modelAndView;
     }
 
