@@ -20,7 +20,7 @@ public class Tag {
 
     @NotNull(message = "The 'name' cannot be null")
     @NotBlank(message = "The 'name' cannot be empty")
-    @Column (name = "name")
+    @Column (name = "name", unique = true)
     private String name;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE)

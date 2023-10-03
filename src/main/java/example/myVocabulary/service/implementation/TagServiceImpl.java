@@ -1,12 +1,19 @@
 package example.myVocabulary.service.implementation;
 
+import example.myVocabulary.dto.TagRequest;
 import example.myVocabulary.exception.EntityNotFoundException;
+import example.myVocabulary.exception.NullEntityReferenceException;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.repository.TagRepository;
 import example.myVocabulary.service.TagService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +22,14 @@ import java.util.Optional;
 public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
     @Override
-    public Tag create(Tag Tag) {
-        return null;
+    public Tag create(Tag tag) {
+        if(tag == null)
+            throw new NullEntityReferenceException("Cannot create empty user object");
+        try{
+            return tagRepository.save(tag);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
@@ -28,7 +41,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag update(Tag Tag) {
+    public Tag update(Tag tag) {
         return null;
     }
 
@@ -43,11 +56,32 @@ public class TagServiceImpl implements TagService {
     }
 
     public Tag readByName(String name)  {
-        return null;
+        if (name == null) {
+            throw new NullEntityReferenceException("Cannot find tag when name equals null");
+        }
+        Optional<Tag> optional = tagRepository.findByName(name);
+        if(optional.isEmpty())
+            throw new EntityNotFoundException("Tag with name: " + name + " does not exist");
+        return optional.get();
     }
 
     @Override
     public List<Tag> getTenRandom() {
         return tagRepository.findTenRandom();
+    }
+
+    @Override
+    public List<String> getTagErrors(TagRequest tagRequest, BindingResult bindingResult) {
+        List<String> errors = new ArrayList<>();
+        if (bindingResult.hasErrors()) {
+            for (ObjectError error : bindingResult.getAllErrors()) {
+                errors.add(error.getDefaultMessage());
+            }
+        }
+        if (tagRepository.findByName(tagRequest.getName()).isPresent()) {
+            errors.add("Tag with name " + tagRequest.getName() + " exist already.");
+        }
+        return errors;
+
     }
 }

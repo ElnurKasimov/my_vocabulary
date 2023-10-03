@@ -1,5 +1,5 @@
 CREATE TABLE words (
-    id BIGINT PRIMARY KEY,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     foreign_word VARCHAR(255) NOT NULL,
     translation_word VARCHAR(255) NOT NULL,
     description VARCHAR(1000),

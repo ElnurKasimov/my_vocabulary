@@ -1,16 +1,19 @@
 package example.myVocabulary.controller;
 
+import example.myVocabulary.dto.TagRequest;
 import example.myVocabulary.dto.TagTransformer;
 import example.myVocabulary.dto.WordTransformer;
+import example.myVocabulary.model.Tag;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -41,4 +44,31 @@ public class TagController {
         return "tag/tag-words";
     }
 
+    @GetMapping(value = {"/create"})
+    public String getCreateTag(Model model) {
+        model.addAttribute("tagRequest", new TagRequest());
+        model.addAttribute("tags",
+                tagService.getAll().stream()
+                        .map(tagTransformer::fromEntity)
+                        .collect(Collectors.toList()));
+        return "tag/create";
+    }
+
+    @PostMapping(value = {"/create"})
+    public String postCreateTag(@ModelAttribute(name="tagRequest") @Valid TagRequest tagRequest, BindingResult bindingResult, Model model) {
+        List<String> errors = tagService.getTagErrors(tagRequest, bindingResult);
+        if (errors.isEmpty()) {
+            Tag newTag = new Tag();
+            newTag.setName(tagRequest.getName());
+            newTag  = tagService.create(newTag);
+            return "redirect:/tags/" + newTag.getId();
+        } else {
+            model.addAttribute("errors", errors);
+            model.addAttribute("tags",
+                    tagService.getAll().stream()
+                            .map(tagTransformer::fromEntity)
+                            .collect(Collectors.toList()));
+            return "/tag/create";
+        }
+    }
 }

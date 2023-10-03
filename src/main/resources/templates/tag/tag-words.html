@@ -19,14 +19,14 @@
                 </form>
             </div>
         </div>
-        <table style ="width : 100%" th:if="${not #lists.isEmpty(words)}">
+        <table style ="width : 100%">
             <tr>
                 <th style="width: 5%">&numero;</th>
                 <th style="width: 25%">Word</th>
                 <th style="width: 25%">Translation</th>
                 <th style="width: 45%">Description</th>
             </tr>
-            <tbody>
+            <tbody th:if="${not #lists.isEmpty(words)}">
                 <tr th:each="word, i : ${words}">
                     <td th:text="${i.index + 1}"></td>
                     <td th:text="${word.foreignWord}"></td>
