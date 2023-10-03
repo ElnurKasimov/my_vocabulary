@@ -79,7 +79,7 @@ public class TagServiceImpl implements TagService {
             }
         }
         if (tagRepository.findByName(tagRequest.getName()).isPresent()) {
-            errors.add("Tag with name " + tagRequest.getName() + " exist already.");
+            errors.add("Tag with name '" + tagRequest.getName() + "' exists already");
         }
         return errors;
 
