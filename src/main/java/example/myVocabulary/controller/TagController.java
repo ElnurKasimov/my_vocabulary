@@ -1,6 +1,7 @@
 package example.myVocabulary.controller;
 
 import example.myVocabulary.dto.TagRequest;
+import example.myVocabulary.dto.TagResponse;
 import example.myVocabulary.dto.TagTransformer;
 import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.model.Tag;
@@ -83,4 +84,34 @@ public class TagController {
         }
         return "redirect:/tags/";
     }
+
+    @GetMapping("/{id}/update")
+    public String getUpdateTag(@PathVariable long id, Model model) {
+        TagResponse tagResponse = tagTransformer.fromEntity(tagService.readById(id));
+        model.addAttribute("tagResponse", tagResponse);
+        model.addAttribute("tags",
+                tagService.getAll().stream()
+                        .map(tagTransformer::fromEntity)
+                        .collect(Collectors.toList()));
+        return "tag/update";
+    }
+
+    @PostMapping("/{id}/update")
+    public String postUpdateTag(@ModelAttribute(name="tagRequest") @Valid TagRequest tagRequest, BindingResult bindingResult, Model model) {
+        List<String> errors = tagService.getTagErrors(tagRequest, bindingResult);
+        if (errors.isEmpty()) {
+            Tag newTag = tagService.update(tagTransformer.toEntity(tagRequest));
+            return "redirect:/tags/" + newTag.getId();
+        } else {
+            model.addAttribute("errors", errors);
+            model.addAttribute("tags",
+                    tagService.getAll().stream()
+                            .map(tagTransformer::fromEntity)
+                            .collect(Collectors.toList()));
+            return "/tag/update";
+        }
+    }
+
+
+
 }

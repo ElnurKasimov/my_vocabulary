@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Tag</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+    <div th:replace="~{header :: header}"></div>
+    <div class="home">
+        <p style="font-size: 30px; color: #666;">
+            Updating tag <b>'<span th:text="${tagResponse.Name}"></span>'</b>:
+        </p>
+        <div class="section-1">
+            <form th:action="@{/tags/{id}/update(id=${tagRsponse.id})}" method="post" class="find-form" th:object="${tagRequest}">
+                <label for="name">Input new tag name:</label>
+                <input type="text" th:field="*{name}" id="name" required>
+                <button type="submit" class="standard-button">Update</button>
+            </form>
+            <ul th:if="${not #lists.isEmpty(errors)}">
+                <li th:each="err : ${errors}" th:text="${err}" class="error"></li>
+            </ul>
+        </div>
+        <div class="section-2">
+            <p style="font-size: 30px; color: #666;">All tags list</p>
+            <table style="width : 100%">
+                <tr>
+                    <th>&numero;</th>
+                    <th>Name</th>
+                </tr>
+                <tbody>
+                <tr th:each="tag, i : ${tags}">
+                    <td th:text="${i.index + 1}"></td>
+                    <td><a th:href="@{/tags/{id}(id=${tag.id})}"th:text="${tag.Name}" class="tag-link"></a></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</body>
+</html>

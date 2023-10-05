@@ -42,7 +42,14 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag update(Tag tag) {
-        return null;
+        if(tag == null)
+            throw new NullEntityReferenceException("Cannot update empty tag object");
+        try{
+            Tag oldTag = readById(tag.getId());
+            return tagRepository.save(tag);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
