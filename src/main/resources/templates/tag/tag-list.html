@@ -23,7 +23,8 @@
                     <td><a th:href="@{/tags/{id}/update(id=${tag.id})}" class="tag-link">Edit</a></td>
                     <td><a th:href="@{/tags/{id}/delete(id=${tag.id})}" class="remove-link">Remove</a></td>
                     <td th:if="${tag.id == errorId}" class="errorDelete">
-                        It's impossible to delete the tag if there is at least one word with such a tag
+                        It's impossible to remove the tag if there is at least one word with such a tag. <br>
+                        Please remove all words from the tag or replace them into another one.
                     </td>
                 </tr>
             </tbody>

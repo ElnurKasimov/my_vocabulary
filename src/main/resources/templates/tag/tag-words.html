@@ -21,10 +21,11 @@
         </div>
         <table style ="width : 100%">
             <tr>
-                <th style="width: 5%">&numero;</th>
-                <th style="width: 25%">Word</th>
-                <th style="width: 25%">Translation</th>
-                <th style="width: 45%">Description</th>
+                <th style="width: 3%">&numero;</th>
+                <th style="width: 23%">Word</th>
+                <th style="width: 24%">Translation</th>
+                <th style="width: 35%">Description</th>
+                <th style="width: 15%" colspan="2">Operations</th>
             </tr>
             <tbody th:if="${not #lists.isEmpty(words)}">
                 <tr th:each="word, i : ${words}">
@@ -32,6 +33,8 @@
                     <td th:text="${word.foreignWord}"></td>
                     <td th:text="${word.translationWord}"></td>
                     <td th:text="${word.description}"></td>
+                    <td><a th:href="@{/words/{id}/update(id=${word.id})}" class="tag-link">Edit</a></td>
+                    <td><a th:href="@{/words/{id}/delete(id=${word.id})}" class="remove-link">Remove</a></td>
                 </tr>
             </tbody>
         </table>
