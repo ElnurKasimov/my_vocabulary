@@ -122,7 +122,7 @@ header {
 }
 
 .error {
-        color: r#ff0066;
+        color: #ff0066;
         display: flex;
         flex-direction: column;
         max-width: 600px;

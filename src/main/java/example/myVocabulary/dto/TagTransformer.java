@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TagTransformer {
 
-    public Tag toEntity(TagRequest tagRequest) {
+    public Tag toEntityFromRequest(TagRequest tagRequest) {
         Tag tag = new Tag();
         tag.setName(tagRequest.getName());
         return tag;

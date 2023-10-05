@@ -82,15 +82,15 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<String> getTagErrors(TagRequest tagRequest, BindingResult bindingResult) {
+    public List<String> getTagErrors(String name, BindingResult bindingResult) {
         List<String> errors = new ArrayList<>();
         if (bindingResult.hasErrors()) {
             for (ObjectError error : bindingResult.getAllErrors()) {
                 errors.add(error.getDefaultMessage());
             }
         }
-        if (tagRepository.findByName(tagRequest.getName()).isPresent()) {
-            errors.add("Tag with name '" + tagRequest.getName() + "' exists already");
+        if (tagRepository.findByName(name).isPresent()) {
+            errors.add("Tag with name '" + name + "' exists already");
         }
         return errors;
 

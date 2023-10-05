@@ -16,7 +16,7 @@ public interface TagService {
 
     List<Tag> getTenRandom();
 
-    List<String> getTagErrors(TagRequest tagRequest, BindingResult bindingResult);
+    List<String> getTagErrors(String name, BindingResult bindingResult);
 
 
 }
