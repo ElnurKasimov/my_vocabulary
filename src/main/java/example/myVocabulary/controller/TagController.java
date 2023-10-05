@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,9 +27,10 @@ public class TagController {
     private final WordTransformer wordTransformer;
 
     @GetMapping(value = {"/"})
-    public String getAllTags(Model model) {
+    public String getAllTags(@ModelAttribute(name = "errorId") Object errorId, Model model) {
+        model.addAttribute("errorId", errorId);
         model.addAttribute("tags",
-                tagService.getAll().stream()
+                tagService.getAll( ).stream()
                         .map(tagTransformer::fromEntity)
                         .collect(Collectors.toList()));
         return "tag/tag-list";
@@ -68,5 +70,17 @@ public class TagController {
                             .collect(Collectors.toList()));
             return "/tag/create";
         }
+    }
+
+    @GetMapping(value = {"/{id}/delete"})
+    public String postDeleteTag(@PathVariable (name = "id") long id,  Model model,
+                                RedirectAttributes redirectAttributes) {
+        if (tagService.readById(id).getWords().isEmpty()) {
+            tagService.delete(id);
+        } else {
+            Object errorId = id;
+            redirectAttributes.addFlashAttribute("errorId", errorId);
+        }
+        return "redirect:/tags/";
     }
 }

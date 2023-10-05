@@ -121,6 +121,18 @@ header {
     margin-right: 10px;
 }
 
+.error {
+        color: r#ff0066;
+        display: flex;
+        flex-direction: column;
+        max-width: 600px;
+}
+
+.errorDelete {
+        position: absolute;
+        margin-right: 10px;
+        color: #ff0066;
+}
 
 
 
@@ -212,9 +224,4 @@ table a:hover {
 }
 */
 
-.error {
-        color: red;
-        display: flex;
-        flex-direction: column;
-        max-width: 600px;
-}
+
