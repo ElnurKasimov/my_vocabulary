@@ -8,7 +8,7 @@
 <body>
     <div th:replace="~{header :: header}"></div>
     <div class="home">
-        <div class="section-1 for home">
+        <div class="section_left_for_home">
             <p style="font-size: 30px; color: #666;">Create new tag</p>
             <form th:action="@{/tags/create}" method="post" class="find-form" th:object="${tagRequest}">
                 <label for="name">Input tag name:</label>
@@ -19,7 +19,7 @@
                 <li th:each="err : ${errors}" th:text="${err}" class="error"></li>
             </ul>
         </div>
-        <div class="section-2 for home">
+        <div class="section_right_for_home">
             <p style="font-size: 30px; color: #666;">All tags list</p>
             <table style="width : 100%">
                 <tr>

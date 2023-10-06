@@ -8,18 +8,18 @@
 <body>
     <div th:replace="~{header :: header}"></div>
     <div class="home">
-        <div class="section-1">
+        <div class="section_left_for_home">
             <p style="font-size: 25px; color: #666;">Updating the tag</p>
             <form th:action="@{/tags/{id}/update (id=${tag.id})}" method="post" class="find-form" th:object="${tag}">
                 <label for="name">Input new tag name:</label>
                 <input type="text" th:field="*{name}" id="name" required>
                 <button type="submit" class="standard-button">Update</button>
-            </form>th:if="${not #lists.isEmpty(errors)}"
-            <ul >
+            </form>
+            <ul th:if="${not #lists.isEmpty(errors)}">
                 <li th:each="err : ${errors}" th:text="${err}" class="error"></li>
             </ul>
         </div>
-        <div class="section-2">
+        <div class="section_right_for_home">
             <p style="font-size: 25px; color: #666;">All tags list</p>
             <table style="width : 100%">
                 <tr>

@@ -8,9 +8,9 @@
 <body>
     <div th:replace="~{header :: header}"></div>
     <div class="word">
-        <div class="section-1 for word">
+        <div class="section_left_for_word">
             <p style="font-size: 30px; color: #666;">Create new word</p>
-            <form th:action="@{/users/create}" class="word-form" method="post" th:object="${word}">
+            <form th:action="@{/words/create}" class="word-form" method="post" th:object="${wordRequest}">
                 <div class="form-group">
                     <label for="foreignWord">Foreign Word</label>
                     <input type="text" th:field="*{foreignWord}" id="foreignWord" required>
@@ -27,14 +27,14 @@
                 </ul>
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <input type="text" th:field="*{description}" id="description" required>
+                    <input type="text" th:field="*{description}" id="description">
                 </div>
                 <ul th:if="${#fields.hasErrors('description')}">
                     <li th:each="err : ${#fields.errors('description')}" th:text="${err}" class="error" />
                 </ul>
                 <div class="form-group">
                     <label for="tag">Tag:</label>
-                    <select name="tags" id="tag">
+                    <select name="tagName" id="tag">
                         <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
                     </select>
                 </div>
@@ -45,7 +45,7 @@
                 </div>
             </form>
         </div>
-        <div class="section-2 for word" th:if="${tag}">
+        <div class="section_right_for_word" th:if="${tag}">
             <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tagName}"></span>'</b></p>
             <table style="width : 100%">
                 <tr>
