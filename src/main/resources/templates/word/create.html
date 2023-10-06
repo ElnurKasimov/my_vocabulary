@@ -34,11 +34,10 @@
                 </ul>
                 <div class="form-group">
                     <label for="tag">Tag:</label>
-                    <select name="tagName" id="tag">
+                    <select  th:field="*{tagName}" id="tag">
                         <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
                     </select>
                 </div>
-
                 <div class="form-buttons-container">
                     <button type="submit" class="standard-button">Save</button>
                     <button type="reset" class="standard-button">Clear</button>
