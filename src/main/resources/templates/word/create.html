@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Word</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+    <div th:replace="~{header :: header}"></div>
+    <div class="word">
+        <div class="section-1 for word">
+            <p style="font-size: 30px; color: #666;">Create new word</p>
+            <form th:action="@{/users/create}" class="word-form" method="post" th:object="${word}">
+                <div class="form-group">
+                    <label for="foreignWord">Foreign Word</label>
+                    <input type="text" th:field="*{foreignWord}" id="foreignWord" required>
+                </div >
+                <ul th:if="${#fields.hasErrors('foreignWord')}">
+                    <li th:each="err : ${#fields.errors('foreignWord')}" th:text="${err}" class="error" />
+                </ul>
+                <div class="form-group">
+                    <label for="translationWord">Translation:</label>
+                    <input type="text" th:field="*{translationWord}" id="translationWord" required>
+                </div>
+                <ul th:if="${#fields.hasErrors('translationWord')}">
+                    <li th:each="err : ${#fields.errors('translationWord')}" th:text="${err}" class="error" />
+                </ul>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <input type="text" th:field="*{description}" id="description" required>
+                </div>
+                <ul th:if="${#fields.hasErrors('description')}">
+                    <li th:each="err : ${#fields.errors('description')}" th:text="${err}" class="error" />
+                </ul>
+                <div class="form-group">
+                    <label for="tag">Tag:</label>
+                    <select name="tags" id="tag">
+                        <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
+                    </select>
+                </div>
+
+                <div class="form-buttons-container">
+                    <button type="submit" class="standard-button">Save</button>
+                    <button type="reset" class="standard-button">Clear</button>
+                </div>
+            </form>
+        </div>
+        <div class="section-2 for word" th:if="${tag}">
+            <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tagName}"></span>'</b></p>
+            <table style="width : 100%">
+                <tr>
+                    <th>&numero;</th>
+                    <th>Word</th>
+                    <th>Translation</th>
+                </tr>
+                <tbody>
+                <tr th:each="word, i : ${words}">
+                    <td th:text="${i.index + 1}"></td>
+                    <td th:text="${word.foreignWord}"></td>
+                    <td th:text="${word.translationWord}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

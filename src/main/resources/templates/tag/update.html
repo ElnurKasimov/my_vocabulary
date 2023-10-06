@@ -14,8 +14,8 @@
                 <label for="name">Input new tag name:</label>
                 <input type="text" th:field="*{name}" id="name" required>
                 <button type="submit" class="standard-button">Update</button>
-            </form>
-            <ul th:if="${not #lists.isEmpty(errors)}">
+            </form>th:if="${not #lists.isEmpty(errors)}"
+            <ul >
                 <li th:each="err : ${errors}" th:text="${err}" class="error"></li>
             </ul>
         </div>

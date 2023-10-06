@@ -46,18 +46,27 @@ header {
     text-decoration: none; /* Отключение подчеркивания при наведении */
 }
 
-
-.home {
+.home, word {
     display: flex;
 }
 
-.section-1 {
+.section-1 for home {
     width: 70%;
     padding: 5px 10px;
 }
 
-.section-2 {
+.section-2 for home{
     width: 30%;
+    padding: 5px 10px;
+}
+
+.section-1 for word {
+    width: 50%;
+    padding: 5px 10px;
+}
+
+.section-2 for word {
+    width: 50%;
     padding: 5px 10px;
 }
 
@@ -134,21 +143,9 @@ header {
         color: #ff0066;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-.user-form {
+.word-form {
     display: flex;
     flex-direction: column;
-    max-width: 300px;
 }
 
 .form-group {
