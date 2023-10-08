@@ -74,6 +74,7 @@ public class WordController {
 //                                 RedirectAttributes redirectAttributes
     ) {
 
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             List<TagResponse> tags = tagService.getAll().stream()
