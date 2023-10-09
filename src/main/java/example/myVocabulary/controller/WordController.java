@@ -1,9 +1,6 @@
 package example.myVocabulary.controller;
 
-import example.myVocabulary.dto.TagResponse;
-import example.myVocabulary.dto.TagTransformer;
-import example.myVocabulary.dto.WordRequest;
-import example.myVocabulary.dto.WordTransformer;
+import example.myVocabulary.dto.*;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
@@ -91,5 +88,6 @@ public class WordController {
         model.addAttribute("words",tag.getWords());
         return "word/create";
     }
+
 
 }

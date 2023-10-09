@@ -17,4 +17,11 @@ public class TagRequest {
     @NotBlank(message = "The 'name' cannot be empty")
     @Size(max = 255, message = "The 'name' length shouldn't be more than 255 symbols")
     private String name;
+
+    @Override
+    public String toString() {
+        return "TagRequest{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

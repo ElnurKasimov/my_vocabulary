@@ -4,8 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
+@Getter @Setter
 public class WordRequest {
     @NotNull(message = "The 'word' cannot be null")
     @NotBlank(message = "The 'word' cannot be empty")
