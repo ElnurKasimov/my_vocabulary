@@ -35,6 +35,7 @@
                 <div class="form-group">
                     <label for="tag">Tag:</label>
                     <select  th:field="*{tagName}" id="tag">
+                        <option value="" hidden>Select a tag using the arrow on the right</option>
                         <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
                     </select>
                 </div>
@@ -45,7 +46,7 @@
             </form>
         </div>
         <div class="section_right_for_word" th:if="${tag}">
-            <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tagName}"></span>'</b></p>
+            <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tag.name}"></span>'</b></p>
             <table style="width : 100%">
                 <tr>
                     <th>&numero;</th>

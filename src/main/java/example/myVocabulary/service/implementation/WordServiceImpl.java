@@ -1,10 +1,13 @@
 package example.myVocabulary.service.implementation;
 
+import example.myVocabulary.exception.NullEntityReferenceException;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.repository.WordRepository;
 import example.myVocabulary.service.WordService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -13,8 +16,14 @@ import java.util.List;
 public class WordServiceImpl implements WordService {
     private  final WordRepository wordRepository;
     @Override
-    public Word create(Word Word) {
-        return null;
+    public Word create(Word word) {
+        if(word == null)
+            throw new NullEntityReferenceException("Cannot create empty word object");
+        try{
+            return wordRepository.save(word);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

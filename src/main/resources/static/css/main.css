@@ -41,9 +41,8 @@ header {
     text-decoration: none;
 }
 
-
 .tag-link:hover, .remove-link:hover {
-    text-decoration: none; /* Отключение подчеркивания при наведении */
+    text-decoration: none;
 }
 
 .home, .word {
@@ -61,19 +60,19 @@ header {
 }
 
 .section_left_for_word {
-    width: 50%;
+    width: 40%;
     padding: 5px 10px;
 }
 
 .section_right_for_word {
-    width: 50%;
+    width: 60%;
     padding: 5px 10px;
 }
 
 .row {
     display: flex;
-    justify-content: space-between; /* Распределить элементы по краям */
-    align-items: center; /* Выравнивание элементов по вертикали по центру */
+    justify-content: space-between;
+    align-items: center;
 }
 
 .shadowed-button {

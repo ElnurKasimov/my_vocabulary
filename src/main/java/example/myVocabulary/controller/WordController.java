@@ -53,10 +53,7 @@ public class WordController {
     }
 
     @GetMapping(value = {"/create"})
-    public String getCreatedWord(
-//            @ModelAttribute("tag") Object tag,
-//            @ModelAttribute("words") Object words,
-                                 Model model) {
+    public String getCreatedWord(Model model) {
         List<TagResponse> tags = tagService.getAll().stream()
                         .map(tagTransformer::fromEntity)
                         .toList();
@@ -67,11 +64,7 @@ public class WordController {
     @PostMapping(value = {"/create"})
     public String postCreateWord(@ModelAttribute("wordRequest") @Valid WordRequest wordRequest,
                                  BindingResult bindingResult,
-                                 Model model
-//                                 RedirectAttributes redirectAttributes
-    ) {
-
-
+                                 Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
             List<TagResponse> tags = tagService.getAll().stream()
@@ -80,12 +73,16 @@ public class WordController {
             model.addAttribute("tags",tags);
             return "word/create";
         }
-        Word newWord = wordService.create(wordTransformer.toEntity(wordRequest));
+        Word newWord = wordTransformer.toEntity(wordRequest);
+        wordService.create(newWord);
         Tag tag = tagService.readByName(wordRequest.getTagName());
-//        redirectAttributes.addFlashAttribute("tag", tag);
-//        redirectAttributes.addFlashAttribute("words", tag.getWords());
         model.addAttribute("tag", tag);
         model.addAttribute("words",tag.getWords());
+        List<TagResponse> tags = tagService.getAll().stream()
+                .map(tagTransformer::fromEntity)
+                .toList();
+        model.addAttribute("tags",tags);
+        model.addAttribute("wordRequest", new WordRequest());
         return "word/create";
     }
 
