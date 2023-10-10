@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,11 +45,10 @@ public class WordController {
     public String postFindWord(@RequestParam("wordPart") String wordPart, Model model) {
         boolean searchPerformed =  true;
         model.addAttribute("words",
-                wordService.readByWordPart(wordPart).stream()
-                        .map(wordTransformer::fromEntityForCRUD)
-                        .collect(Collectors.toList()));
+                new ArrayList<>(wordService.readByWordPart(wordPart)));
         model.addAttribute("word", wordPart);
         model.addAttribute("searchPerformed", searchPerformed);
+
         return "word/find";
     }
 
@@ -84,6 +84,18 @@ public class WordController {
         model.addAttribute("tags",tags);
         model.addAttribute("wordRequest", new WordRequest());
         return "word/create";
+    }
+
+    @GetMapping(value = {"/{id}/delete"})
+    public String getDeleteWord(@PathVariable (name = "id") long id, Model model) {
+        Tag tag = wordService.readById(id).getTag();
+        wordService.delete(id);
+        model.addAttribute("words",
+                        tag.getWords().stream()
+                        .map(wordTransformer::fromEntityForCRUD)
+                        .collect(Collectors.toList()));
+        model.addAttribute("tagName", tag.getName());
+        return "tag/tag-words";
     }
 
 

@@ -32,7 +32,7 @@
                         <td th:text="${word.foreignWord}"></td>
                         <td th:text="${word.translationWord}"></td>
                         <td th:text="${word.description}"></td>
-                        <td th:text="${word.tagName}"></td>
+                        <td><a th:href="@{/tags/{id}(id=${word.tag.id})}" class="tag-link" th:text="${word.tag.name}"></a></td>
                     </tr>
                 </tbody>
             </table>

@@ -1,6 +1,8 @@
 package example.myVocabulary.service.implementation;
 
+import example.myVocabulary.exception.EntityNotFoundException;
 import example.myVocabulary.exception.NullEntityReferenceException;
+import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.repository.WordRepository;
 import example.myVocabulary.service.WordService;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +31,10 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public Word readById(long id) {
-        return null;
+        Optional<Word> optional = wordRepository.findById(id);
+        if(optional.isEmpty())
+            throw new EntityNotFoundException("Word with id: " + id + " does not exist");
+        return optional.get();
     }
 
     @Override
@@ -38,7 +44,11 @@ public class WordServiceImpl implements WordService {
 
     @Override
     public void delete(long id) {
-
+        try {
+            wordRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
