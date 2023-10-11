@@ -159,9 +159,9 @@ header {
     margin-right: 10px;
 }
 
-.form-group input, .form-group select {
+.form-group input, .form-group select, .form-group textarea {
     flex: 3;
-    height: 30px;
+    box-sizing: border-box;
     width: 100%;
     border: 1px solid #ccc;
     padding: 5px;
@@ -175,9 +175,9 @@ header {
     margin-bottom: 10px;
 }
 
-.form-group input[type="text"] {
+/* .form-group input[type="text"] {
     width: 100%;
-}
+} */
 
 /* Стили для таблицы */
 /* table {

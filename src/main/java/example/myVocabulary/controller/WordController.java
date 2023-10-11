@@ -98,5 +98,25 @@ public class WordController {
         return "tag/tag-words";
     }
 
+    @GetMapping(value = {"/{id}/update"})
+    public String getUpdateWord(@PathVariable (name = "id") long id, Model model) {
+        List<TagResponse> tags = tagService.getAll().stream()
+                .map(tagTransformer::fromEntity)
+                .toList();
+        model.addAttribute("tags",tags);
+        model.addAttribute("word", wordService.readById(id));
+        // TODO refactor template - add hidden field id and return it for POST handling
+        return "word/update";
+    }
+
+    @PostMapping(value = {"/{id}/update"})
+    public String postUpdateWord(@PathVariable (name = "id") long id,
+                                @ModelAttribute("wordRequest") @Valid WordRequest wordRequest,
+                                BindingResult bindingResult, Model model) {
+
+
+        return "tag/tag-words";
+    }
+
 
 }
