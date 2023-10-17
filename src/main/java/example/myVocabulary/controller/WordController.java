@@ -114,7 +114,6 @@ public class WordController {
                                 @ModelAttribute("wordRequest") @Valid WordRequest wordRequest,
                                 BindingResult bindingResult, Model model) {
 
-
         return "tag/tag-words";
     }
 
