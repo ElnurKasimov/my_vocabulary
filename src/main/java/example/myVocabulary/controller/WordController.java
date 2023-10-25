@@ -117,5 +117,4 @@ public class WordController {
         return "tag/tag-words";
     }
 
-
 }
