@@ -26,7 +26,7 @@
            </ul>
            <div class="form-group">
                <label for="description">Description:</label>
-               <textarea rows="5" type="text" th:field="*{description}" id="description"></textarea>
+               <textarea rows="7" type="text" th:field="*{description}" id="description"></textarea>
            </div>
            <ul th:if="${#fields.hasErrors('description')}">
                <li th:each="err : ${#fields.errors('description')}" th:text="${err}" class="error" />
