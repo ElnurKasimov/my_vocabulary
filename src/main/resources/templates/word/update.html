@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--suppress ALL -->
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,21 +15,21 @@
                <input type="text" th:field="*{foreignWord}" id="foreignWord">
            </div >
            <ul th:if="${#fields.hasErrors('foreignWord')}">
-               <li th:each="err : ${#fields.errors('foreignWord')}" th:text="${err}" class="error" />
+               <li th:each="err : ${#fields.errors('foreignWord')}" th:text="${err}" class="error"></li>
            </ul>
            <div class="form-group">
                <label for="translationWord">Translation:</label>
                <input type="text" th:field="*{translationWord}" id="translationWord" required>
            </div>
            <ul th:if="${#fields.hasErrors('translationWord')}">
-               <li th:each="err : ${#fields.errors('translationWord')}" th:text="${err}" class="error" />
+               <li th:each="err : ${#fields.errors('translationWord')}" th:text="${err}" class="error"></li>
            </ul>
            <div class="form-group">
                <label for="description">Description:</label>
                <textarea rows="7" type="text" th:field="*{description}" id="description"></textarea>
            </div>
            <ul th:if="${#fields.hasErrors('description')}">
-               <li th:each="err : ${#fields.errors('description')}" th:text="${err}" class="error" />
+               <li th:each="err : ${#fields.errors('description')}" th:text="${err}" class="error"></li>
            </ul>
            <div class="form-group">
                <label for="tag">Tag:</label>
