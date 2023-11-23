@@ -113,7 +113,6 @@ public class WordController {
     public String postUpdateWord(@PathVariable (name = "id") long id,
                                 @ModelAttribute("wordRequest") @Valid WordRequest wordRequest,
                                 BindingResult bindingResult, Model model) {
-
         return "tag/tag-words";
     }
 
