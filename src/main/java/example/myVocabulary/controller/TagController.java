@@ -71,7 +71,6 @@ public class TagController {
             return "/tag/create";
         }
     }
-
     @GetMapping(value = {"/{id}/delete"})
     public String postDeleteTag(@PathVariable (name = "id") long id,  Model model,
                                 RedirectAttributes redirectAttributes) {

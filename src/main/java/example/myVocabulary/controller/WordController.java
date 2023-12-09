@@ -98,6 +98,7 @@ public class WordController {
         return "tag/tag-words";
     }
 
+
     @GetMapping(value = {"/{id}/update"})
     public String getUpdateWord(@PathVariable (name = "id") long id, Model model) {
         List<TagResponse> tags = tagService.getAll().stream()
