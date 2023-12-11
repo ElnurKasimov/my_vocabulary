@@ -33,6 +33,12 @@ public class ApplicationExceptionHandler {
         return getModelAndView(request, HttpStatus.BAD_REQUEST, e);
     }
 
+    @ExceptionHandler(InvalidDeletionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ModelAndView handleDeletionNotEmptyNag(HttpServletRequest request, InvalidDeletionException e) {
+        return getModelAndView(request, HttpStatus.BAD_REQUEST, e);
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView handleOtherExceptions(HttpServletRequest request, Exception e) {

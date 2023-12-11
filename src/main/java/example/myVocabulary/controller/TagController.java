@@ -4,6 +4,7 @@ import example.myVocabulary.dto.TagRequest;
 import example.myVocabulary.dto.TagTransformer;
 import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.model.Tag;
+import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
 import jakarta.validation.Valid;
@@ -29,15 +30,15 @@ public class TagController {
     @GetMapping(value = {"/"})
     public String getAllTags(@ModelAttribute(name = "errorId") Object errorId, Model model) {
         model.addAttribute("errorId", errorId);
-        model.addAttribute("tags",
-                tagService.getAll( ).stream()
-                        .map(tagTransformer::fromEntity)
-                        .collect(Collectors.toList()));
+        model.addAttribute("tags", tagService.getAll());
+//                tagService.getAll( ).stream()
+//                        .map(tagTransformer::fromEntity)
+//                        .collect(Collectors.toList()));
         return "tag/tag-list";
     }
 
     @GetMapping(value = {"/{id}"})
-    public String getAllTags(@PathVariable (name = "id") long id,  Model model) {
+    public String getTag(@PathVariable (name = "id") long id,  Model model) {
         model.addAttribute("words",
                 tagService.readById(id).getWords().stream()
                         .map(wordTransformer::fromEntityForCRUD)
@@ -99,6 +100,8 @@ public class TagController {
                                 BindingResult bindingResult, Model model) {
         List<String> errors = tagService.getTagErrors(tag.getName(), bindingResult);
         if (errors.isEmpty()) {
+            List<Word> listWordsBeforeUpdate = tagService.readById(id).getWords();
+            tag.setWords(listWordsBeforeUpdate);
             tagService.update(tag);
             return "redirect:/tags/";
         } else {

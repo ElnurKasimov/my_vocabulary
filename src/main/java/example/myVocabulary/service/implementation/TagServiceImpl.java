@@ -2,6 +2,7 @@ package example.myVocabulary.service.implementation;
 
 import example.myVocabulary.dto.TagRequest;
 import example.myVocabulary.exception.EntityNotFoundException;
+import example.myVocabulary.exception.InvalidDeletionException;
 import example.myVocabulary.exception.NullEntityReferenceException;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.repository.TagRepository;
@@ -54,6 +55,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void delete(long id) {
+        Tag tagFromBD = tagRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Tag with id: " + id + " does not exist"));
+        if (tagFromBD.getWords().isEmpty()) {
+            throw new InvalidDeletionException("It's impossible to remove the tag if there is at least one word with such a tag.\n" +
+                    "Please remove all words from the tag or replace them into another one.");
+        }
         try {
             tagRepository.deleteById(id);
         } catch (Exception e) {
