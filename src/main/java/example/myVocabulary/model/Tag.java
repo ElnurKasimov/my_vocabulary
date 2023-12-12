@@ -24,7 +24,7 @@ public class Tag {
     private String name;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    List<Word> words;
+    private List<Word> words;
 
     @Override
     public String toString() {

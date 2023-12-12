@@ -76,6 +76,7 @@ public class WordController {
         Word newWord = wordTransformer.toEntity(wordRequest);
         wordService.create(newWord);
         Tag tag = tagService.readByName(wordRequest.getTagName());
+        tag.getWords().add(newWord);
         model.addAttribute("tag", tag);
         model.addAttribute("words",tag.getWords());
         List<TagResponse> tags = tagService.getAll().stream()
@@ -88,8 +89,11 @@ public class WordController {
 
     @GetMapping(value = {"/{id}/delete"})
     public String getDeleteWord(@PathVariable (name = "id") long id, Model model) {
-        Tag tag = wordService.readById(id).getTag();
+        Word wordToDelete = wordService.readById(id);
+        long tagId = wordToDelete.getTag().getId();
         wordService.delete(id);
+        Tag tag = tagService.readById(tagId);
+        tag.getWords().remove(wordToDelete);
         model.addAttribute("words",
                         tag.getWords().stream()
                         .map(wordTransformer::fromEntityForCRUD)

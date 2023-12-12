@@ -7,6 +7,7 @@ import example.myVocabulary.exception.NullEntityReferenceException;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.repository.TagRepository;
 import example.myVocabulary.service.TagService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
@@ -38,7 +40,9 @@ public class TagServiceImpl implements TagService {
         Optional<Tag> optional = tagRepository.findById(id);
         if(optional.isEmpty())
             throw new EntityNotFoundException("Tag with id: " + id + " does not exist");
-        return optional.get();
+        Tag tag = optional.get();
+        int size = tag.getWords().size();
+        return tag;
     }
 
     @Override
