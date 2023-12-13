@@ -23,7 +23,7 @@ public class Tag {
     @Column (name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tag")
     private List<Word> words;
 
     @Override
