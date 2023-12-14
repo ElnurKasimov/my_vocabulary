@@ -14,7 +14,6 @@ import lombok.Setter;
 @Table(name="words")
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
 public class Word {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +36,47 @@ public class Word {
     @JoinColumn(name="tag_id")
     private Tag tag;
 
-//    @Override
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getForeignWord() {
+        return foreignWord;
+    }
+
+    public void setForeignWord(String foreignWord) {
+        this.foreignWord = foreignWord;
+    }
+
+    public String getTranslationWord() {
+        return translationWord;
+    }
+
+    public void setTranslationWord(String translationWord) {
+        this.translationWord = translationWord;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    //    @Override
 //    public String toString() {
 //        return "Word{" +
 //                "id=" + id +

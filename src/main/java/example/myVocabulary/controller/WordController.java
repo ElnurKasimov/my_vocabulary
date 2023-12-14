@@ -93,9 +93,10 @@ public class WordController {
         long tagId = wordToDelete.getTag().getId();
         wordService.delete(id);
         Tag tag = tagService.readById(tagId);
-        tag.getWords().remove(wordToDelete);
+        List<Word> words = tag.getWords();
+        words.remove(wordToDelete);
         model.addAttribute("words",
-                        tag.getWords().stream()
+                        words.stream()
                         .map(wordTransformer::fromEntityForCRUD)
                         .collect(Collectors.toList()));
         model.addAttribute("tagName", tag.getName());

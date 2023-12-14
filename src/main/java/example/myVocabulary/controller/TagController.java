@@ -39,8 +39,10 @@ public class TagController {
 
     @GetMapping(value = {"/{id}"})
     public String getTag(@PathVariable (name = "id") long id,  Model model) {
+        Tag tag = tagService.readById(id);
+        List<Word> words = tag.getWords();
         model.addAttribute("words",
-                tagService.readById(id).getWords().stream()
+                words.stream()
                         .map(wordTransformer::fromEntityForCRUD)
                         .collect(Collectors.toList()));
         model.addAttribute("tagName", tagService.readById(id).getName());
