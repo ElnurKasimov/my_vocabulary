@@ -76,9 +76,12 @@ public class WordController {
         Word newWord = wordTransformer.toEntity(wordRequest);
         wordService.create(newWord);
         Tag tag = tagService.readByName(wordRequest.getTagName());
-        tag.getWords().add(newWord);
+//        List<Word> words = tag.getWords();
+//        words.add(newWord);
+//        tag.setWords(words);
+//        tagService.update(tag);
         model.addAttribute("tag", tag);
-        model.addAttribute("words",tag.getWords());
+        //model.addAttribute("words",tag.getWords());
         List<TagResponse> tags = tagService.getAll().stream()
                 .map(tagTransformer::fromEntity)
                 .toList();
@@ -93,12 +96,15 @@ public class WordController {
         long tagId = wordToDelete.getTag().getId();
         wordService.delete(id);
         Tag tag = tagService.readById(tagId);
-        List<Word> words = tag.getWords();
-        words.remove(wordToDelete);
-        model.addAttribute("words",
-                        words.stream()
-                        .map(wordTransformer::fromEntityForCRUD)
-                        .collect(Collectors.toList()));
+//        List<Word> words = tag.getWords();
+//        words.remove(wordToDelete);
+//        tag.setWords(words);
+//        tagService.update(tag);
+        model.addAttribute("words", tag.getWords()
+//                        words.stream()
+//                        .map(wordTransformer::fromEntityForCRUD)
+//                        .collect(Collectors.toList())
+        );
         model.addAttribute("tagName", tag.getName());
         return "tag/tag-words";
     }

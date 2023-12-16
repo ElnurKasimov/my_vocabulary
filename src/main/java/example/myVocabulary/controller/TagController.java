@@ -45,7 +45,7 @@ public class TagController {
                 words.stream()
                         .map(wordTransformer::fromEntityForCRUD)
                         .collect(Collectors.toList()));
-        model.addAttribute("tagName", tagService.readById(id).getName());
+        model.addAttribute("tagName", tag.getName());
         return "tag/tag-words";
     }
 

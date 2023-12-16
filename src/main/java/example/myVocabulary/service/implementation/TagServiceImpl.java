@@ -36,11 +36,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag readById(long id) {
-        Optional<Tag> optional = tagRepository.findById(id);
+        //Optional<Tag> optional = tagRepository.findById(id);
+        Optional<Tag> optional = tagRepository.findTagById(id);
         if(optional.isEmpty())
             throw new EntityNotFoundException("Tag with id: " + id + " does not exist");
         Tag tag = optional.get();
-        int size = tag.getWords().size();
+        //int size = tag.getWords().size();
         return tag;
     }
 

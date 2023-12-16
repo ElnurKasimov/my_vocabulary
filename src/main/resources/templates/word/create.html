@@ -55,7 +55,7 @@
                     <th>Translation</th>
                 </tr>
                 <tbody>
-                <tr th:each="word, i : ${words}">
+                <tr th:each="word, i : ${tag.words}">
                     <td th:text="${i.index + 1}"></td>
                     <td th:text="${word.foreignWord}"></td>
                     <td th:text="${word.translationWord}"></td>

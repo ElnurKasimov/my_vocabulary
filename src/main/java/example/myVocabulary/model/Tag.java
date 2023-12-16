@@ -23,7 +23,7 @@ public class Tag {
     @Column (name = "name", unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<Word> words = new ArrayList<>();
 
     public long getId() {
