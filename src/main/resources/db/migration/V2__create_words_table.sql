@@ -3,6 +3,6 @@ CREATE TABLE words (
     foreign_word VARCHAR(255) NOT NULL,
     translation_word VARCHAR(255) NOT NULL,
     description VARCHAR(1000),
-    tag_id VARCHAR(255),
+    tag_id BIGINT,
     FOREIGN KEY (tag_id) REFERENCES tags (id)
 )

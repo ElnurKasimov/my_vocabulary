@@ -40,6 +40,7 @@ public class TagServiceImpl implements TagService {
         if(optional.isEmpty())
             throw new EntityNotFoundException("Tag with id: " + id + " does not exist");
         Tag tag = optional.get();
+        
         return tag;
     }
 

@@ -1,10 +1,10 @@
 INSERT INTO tags (id, name)
 VALUES
-    (1, 'Hiperskill 1'),
-    (2, 'Hiperskill 2'),
-    (3, 'Spring Academy 1'),
-    (4, 'Spring Academy 2'),
-    (5, 'IT 1'),
-    (6, 'IT 2'),
-    (7, 'GoIT 1'),
-    (8, 'GoIT 2');
+    (1, 'Tag 1'),
+    (2, 'Tag 2'),
+    (3, 'New Tag 1'),
+    (4, 'New Tag 2'),
+    (5, 'Other tag 1'),
+    (6, 'Other tag 2'),
+    (7, 'Another tag 1'),
+    (8, 'Another tag 2');
