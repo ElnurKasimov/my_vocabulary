@@ -63,8 +63,9 @@ public class TagController {
     public String postCreateTag(@ModelAttribute(name="tagRequest") @Valid TagRequest tagRequest, BindingResult bindingResult, Model model) {
         List<String> errors = tagService.getTagErrors(tagRequest.getName(), bindingResult);
         if (errors.isEmpty()) {
-            Tag newTag = tagService.create(tagTransformer.toEntityFromRequest(tagRequest));
-            return "redirect:/tags/" + newTag.getId();
+            Tag newTag = tagTransformer.toEntityFromRequest(tagRequest);
+            Tag newTagFromBD = tagService.create(newTag);
+            return "redirect:/tags/" + newTagFromBD.getId();
         } else {
             model.addAttribute("errors", errors);
             model.addAttribute("tags",

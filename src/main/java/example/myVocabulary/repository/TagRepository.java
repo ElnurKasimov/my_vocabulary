@@ -14,7 +14,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query(value = "SELECT * FROM tags ORDER BY RAND() LIMIT 10", nativeQuery = true)
     public List<Tag> findTenRandom();
 
-    @Query(value = "SELECT t FROM Tag t JOIN FETCH t.words b WHERE t.id = :tagId")
+    @Query(value = "SELECT t FROM Tag t LEFT JOIN FETCH t.words b WHERE t.id = :tagId")
     public Optional<Tag> findTagById(@Param("tagId") long id);
 
 }
