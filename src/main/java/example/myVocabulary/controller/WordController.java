@@ -90,6 +90,7 @@ public class WordController {
         return "word/create";
     }
 
+
     @GetMapping(value = {"/{id}/delete"})
     public String getDeleteWord(@PathVariable (name = "id") long id, Model model) {
         Word wordToDelete = wordService.readById(id);
