@@ -33,8 +33,8 @@
                <li th:each="err : ${#fields.errors('description')}" th:text="${err}" class="error"></li>
            </ul>
            <div class="form-group">
-               <label for="tag">Tag:</label>
-               <select  th:field="*{tagName}" id="tag">
+               <label for="tagName">Tag:</label>
+               <select id="tagName" name="tagName">
                    <option value="" hidden>Select a tag using the arrow on the right</option>
                    <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
                </select>

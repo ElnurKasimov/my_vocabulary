@@ -117,8 +117,8 @@ public class WordController {
 //                .map(tagTransformer::fromEntity)
 //                .toList();
         model.addAttribute("tags",tagService.getAll());
-        model.addAttribute("word", wordTransformer.toWordRequest(wordService.readById(id)));
-        model.addAttribute("tag", wordService.readById(id).getTag());
+        model.addAttribute("word", wordService.readById(id));
+        //model.addAttribute("tag", wordService.readById(id).getTag());
         // TODO refactor template - add hidden field id and return it for POST handling
         return "word/update";
     }
@@ -132,9 +132,17 @@ public class WordController {
             model.addAttribute("tags",tagService.getAll());
             return "word/update";
         }
-        Word updatedWord = wordTransformer.toEntity(wordRequest);
-        updatedWord.setId(id);
-        wordService.update(updatedWord);
+        Word toUpdate = wordTransformer.toEntity(wordRequest);
+        toUpdate.setId(id);
+        Word updatedWord = wordService.update(toUpdate);
+        model.addAttribute("tag",updatedWord.getTag());
+
+        model.addAttribute("tagName", updatedWord.getTag().getName());
+        model.addAttribute("words", updatedWord.getTag().getWords().stream()
+                        .map(wordTransformer::fromEntityForCRUD)
+                        .collect(Collectors.toList()));
+
+
 
         return "tag/tag-words";
     }

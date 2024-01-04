@@ -39,9 +39,7 @@ public class TagServiceImpl implements TagService {
         Optional<Tag> optional = tagRepository.findTagById(id);
         if(optional.isEmpty())
             throw new EntityNotFoundException("Tag with id: " + id + " does not exist");
-        Tag tag = optional.get();
-        
-        return tag;
+        return optional.get();
     }
 
     @Override
@@ -49,7 +47,7 @@ public class TagServiceImpl implements TagService {
         if(tag == null)
             throw new NullEntityReferenceException("Cannot update empty tag object");
         try{
-            Tag oldTag = readById(tag.getId());
+            //Tag oldTag = readById(tag.getId());
             return tagRepository.save(tag);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
