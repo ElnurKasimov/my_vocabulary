@@ -10,7 +10,7 @@
     <div th:replace="~{header :: header}"></div>
     <div style="width: 50%;">
        <p style="font-size: 30px; color: #666;">Update word <b>'<span th:text="${word.foreignWord}"></span>'</b>:</p>
-       <form th:action="@{/words/create}" class="word-form" method="post" th:object="${word}">
+       <form th:action="@{/words/{id}/update (id=${word.id})}" class="word-form" method="post" th:object="${word}">
            <div class="form-group">
                <label for="foreignWord">Foreign Word</label>
                <input type="text" th:field="*{foreignWord}" id="foreignWord">
@@ -34,17 +34,34 @@
            </ul>
            <div class="form-group">
                <label for="tag">Tag:</label>
-               <select  th:field="*{tag.name}" id="tag">
+               <select  th:field="*{tagName}" id="tag">
                    <option value="" hidden>Select a tag using the arrow on the right</option>
                    <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
                </select>
            </div>
-
            <div class="form-buttons-container">
-               <button type="submit" class="standard-button">Save</button>
+               <button type="submit" class="standard-button">Update</button>
                <button type="reset" class="standard-button">Clear</button>
            </div>
        </form>
     </div>
+<!--    <div class="section_right_for_word" th:if="${tag}">-->
+<!--        <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tag.name}"></span>'</b></p>-->
+<!--        <table style="width : 100%">-->
+<!--            <tr>-->
+<!--                <th>&numero;</th>-->
+<!--                <th>Word</th>-->
+<!--                <th>Translation</th>-->
+<!--            </tr>-->
+<!--            <tbody>-->
+<!--            <tr th:each="word, i : ${tag.words}">-->
+<!--                <td th:text="${i.index + 1}"></td>-->
+<!--                <td th:text="${word.foreignWord}"></td>-->
+<!--                <td th:text="${word.translationWord}"></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
+<!--    </div>-->
+
 </body>
 </html>

@@ -20,6 +20,15 @@ public class WordTransformer {
         return word;
     }
 
+    public WordRequest toWordRequest(Word word) {
+        WordRequest wordRequest = new WordRequest();
+        wordRequest.setForeignWord(word.getForeignWord());
+        wordRequest.setTranslationWord(word.getTranslationWord());
+        wordRequest.setDescription(word.getDescription());
+        wordRequest.setTagName(word.getTag().getName());
+    return wordRequest;
+    }
+
     public  WordResponseForHome fromEntityForHome(Word word) {
         return new WordResponseForHome(word);
     }

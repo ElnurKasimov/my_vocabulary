@@ -89,7 +89,7 @@ public class TagController {
 
     @GetMapping("/{id}/update")
     public String getUpdateTag(@PathVariable long id, Model model) {
-    model.addAttribute("tag", tagService.readById(id));
+        model.addAttribute("tag", tagService.readById(id));
         model.addAttribute("tags",
                 tagService.getAll().stream()
                         .map(tagTransformer::fromEntity)

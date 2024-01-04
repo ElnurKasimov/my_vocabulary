@@ -38,8 +38,15 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public Word update(Word Word) {
-        return null;
+    public Word update(Word word) {
+        if(word == null)
+            throw new NullEntityReferenceException("Cannot update empty word object");
+        try{
+            Word oldWord = readById(word.getId());
+            return wordRepository.save(word);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
