@@ -26,15 +26,14 @@ public class PracticeController {
     private final WordService wordService;
     private final WordTransformer wordTransformer;
 
-//    @GetMapping(value = {"/"})
-//    public String getAllTags(@ModelAttribute(name = "errorId") Object errorId, Model model) {
-//        model.addAttribute("errorId", errorId);
-//        model.addAttribute("tags",
-//                tagService.getAll( ).stream()
-//                        .map(tagTransformer::fromEntity)
-//                        .collect(Collectors.toList()));
-//        return "tag/tag-list";
-//    }
+    @GetMapping(value = {"/"})
+    public String getAllTags(Model model) {
+        model.addAttribute("tags",
+        tagService.getAll( ).stream()
+                .map(tagTransformer::fromEntity)
+                .collect(Collectors.toList()));
+    return "practice";
+    }
 //
 //    @GetMapping(value = {"/{id}"})
 //    public String getAllTags(@PathVariable (name = "id") long id,  Model model) {
