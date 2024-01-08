@@ -4,6 +4,7 @@ import example.myVocabulary.dto.TagRequest;
 import example.myVocabulary.dto.TagTransformer;
 import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.model.Tag;
+import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,23 +29,53 @@ public class PracticeController {
     private final WordTransformer wordTransformer;
 
     @GetMapping(value = {"/"})
-    public String getAllTags(Model model) {
+    public String getInfoForPractice(Model model) {
         model.addAttribute("tags",
         tagService.getAll( ).stream()
                 .map(tagTransformer::fromEntity)
                 .collect(Collectors.toList()));
     return "practice";
     }
-//
-//    @GetMapping(value = {"/{id}"})
-//    public String getAllTags(@PathVariable (name = "id") long id,  Model model) {
-//        model.addAttribute("words",
-//                tagService.readById(id).getWords().stream()
-//                        .map(wordTransformer::fromEntityForCRUD)
-//                        .collect(Collectors.toList()));
-//        model.addAttribute("tagName", tagService.readById(id).getName());
-//        return "tag/tag-words";
-//    }
+
+    @PostMapping(value = {"/"})
+    public String postInfoForPractice(@RequestParam(name="tagName") String tagName,
+                                      @RequestParam(name="translateDirection") String translateDirection,
+                                      Model model,
+                                      RedirectAttributes redirectAttributes) {
+        Tag tag = tagService.readByName(tagName);
+        redirectAttributes.addFlashAttribute("translateDirection", translateDirection);
+        return "redirect:/practice/" + tag.getId();
+    }
+
+    @GetMapping(value = {"/{id}"})
+    public String getTagForPractice(@PathVariable (name = "id") long id,
+                             @ModelAttribute(name = "translateDirection") String translateDirection,
+                             Model model) {
+        Tag tag = tagService.readById(id);
+        List<Word> words = tag.getWords();
+        model.addAttribute("words",
+                words.stream()
+                        .map(wordTransformer::fromEntityForCRUD)
+                        .collect(Collectors.toList()));
+        model.addAttribute("tagName", tag.getName());
+        if("direct".equals(translateDirection)) {
+            model.addAttribute("foreign", true);
+            model.addAttribute("native", false);
+            model.addAttribute("description", false);
+        } else {
+            model.addAttribute("foreign", false);
+            model.addAttribute("native",true);
+            model.addAttribute("description", false);
+        }
+        model.addAttribute("tags",
+                tagService.getAll( ).stream()
+                        .map(tagTransformer::fromEntity)
+                        .collect(Collectors.toList()));
+        return "practice";
+    }
+
+
+
 //
 //    @GetMapping(value = {"/create"})
 //    public String getCreateTag(Model model) {

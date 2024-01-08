@@ -8,28 +8,49 @@
 <body>
     <div th:replace="~{header :: header}"></div>
 
-        <form th:action="@{/practice/}" method="post">
-            <div class="form-practice">
-                <div style="flex: 1;">
-                    <label for="tag" style="font-size: 25px;">Tag for practice:</label>
-                    <select  id="tag" name="tag" style="font-size: 16px;">
-                        <option value="" hidden>Select a tag using the arrow on the right</option>
-                        <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
-                    </select>
-                </div>
-
-                <div style="margin-left: 20px; font-size: 20px;">
-                    <input type="radio" id="direct" name="translateDirection" value="direct">
-                    <label for="direct">Direct translation</label>
-                    <input type="radio" id="reverse" name="translateDirection" value="reverse">
-                    <label for="reverse">Reverse translation</label>
-                </div>
-
-                <div style="margin-left: 40px;">
-                    <button type="submit" class="standard-button">Choose</button>
-                </div>
+    <form th:action="@{/practice/}" method="post">
+        <div class="form-practice">
+            <div style="flex: 1;">
+                <label for="tagName" style="font-size: 25px;">Tag for practice:</label>
+                <select  id="tagName" name="tagName" style="font-size: 16px;">
+                    <option value="" hidden>Select a tag using the arrow on the right</option>
+                    <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
+                </select>
             </div>
-        </form>
+
+            <div style="margin-left: 20px; font-size: 20px;">
+                <input type="radio" id="direct" name="translateDirection" value="direct">
+                <label for="direct">from foreign to native</label>
+                <input type="radio" id="reverse" name="translateDirection" value="reverse">
+                <label for="reverse">from native to foreign</label>
+            </div>
+
+            <div style="margin-left: 40px;">
+                <button type="submit" class="standard-button">Choose</button>
+            </div>
+        </div>
+    </form>
+
+<!--    <p style="font-size: 30px; color: #666;">-->
+<!--        Practice for tag <b>'<span th:text="${tagName}"></span>'</b>:-->
+<!--    </p>-->
+
+    <table  th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
+        <tr>
+            <th style="width: 3%">&numero;</th>
+            <th style="width: 23%">Word</th>
+            <th style="width: 24%">Translation</th>
+            <th style="width: 35%">Description</th>
+        </tr>
+        <tbody>
+        <tr th:each="word, i : ${words}">
+            <td th:text="${i.index + 1}"></td>
+            <td th:text="${word.foreignWord}"></td>
+            <td th:text="${word.translationWord}"></td>
+            <td th:text="${word.description}"></td>
+        </tr>
+        </tbody>
+    </table>
 
 </body>
 </html>
