@@ -31,24 +31,30 @@
         </div>
     </form>
 
-<!--    <p style="font-size: 30px; color: #666;">-->
-<!--        Practice for tag <b>'<span th:text="${tagName}"></span>'</b>:-->
-<!--    </p>-->
+    <p th:if="${not #lists.isEmpty(words)}" style="font-size: 30px; color: #666;">
+        Practice for tag <b>'<span th:text="${tagName}"></span>'</b>:
+    </p>
 
     <table  th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
         <tr>
             <th style="width: 3%">&numero;</th>
-            <th style="width: 23%">Word</th>
+            <th style="width: 17%">Word</th>
             <th style="width: 24%">Translation</th>
-            <th style="width: 35%">Description</th>
+            <th style="width: 40%">Description</th>
         </tr>
         <tbody>
-        <tr th:each="word, i : ${words}">
-            <td th:text="${i.index + 1}"></td>
-            <td th:text="${word.foreignWord}"></td>
-            <td th:text="${word.translationWord}"></td>
-            <td th:text="${word.description}"></td>
-        </tr>
+            <tr th:each="word, i : ${words}">
+                <td th:text="${i.index + 1}"></td>
+                <td>
+                    <span th:text="${foreign[i.index] ? word.foreignWord : ''}" ></span>
+                </td>
+                <td>
+                    <span th:text="${translation[i.index] ? word.translationWord : ''}"></span>
+                </td>
+                <td>
+                    <span th:text="${description[i.index] ? word.description : ''}"></span>
+                </td>
+            </tr>
         </tbody>
     </table>
 

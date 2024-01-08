@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,14 +59,22 @@ public class PracticeController {
                         .map(wordTransformer::fromEntityForCRUD)
                         .collect(Collectors.toList()));
         model.addAttribute("tagName", tag.getName());
+        boolean[] foreign = new boolean[words.size()];
+        boolean[] translation = new boolean[words.size()];
+        boolean[] description = new boolean[words.size()];
+        Arrays.fill(foreign, false);
+        Arrays.fill(translation, false);
+        Arrays.fill(description, false);
         if("direct".equals(translateDirection)) {
-            model.addAttribute("foreign", true);
-            model.addAttribute("native", false);
-            model.addAttribute("description", false);
+            Arrays.fill(foreign, true);
+            model.addAttribute("foreign", foreign);
+            model.addAttribute("translation", translation);
+            model.addAttribute("description", description);
         } else {
-            model.addAttribute("foreign", false);
-            model.addAttribute("native",true);
-            model.addAttribute("description", false);
+            Arrays.fill(translation, true);
+            model.addAttribute("foreign", foreign);
+            model.addAttribute("translation",translation);
+            model.addAttribute("description", description);
         }
         model.addAttribute("tags",
                 tagService.getAll( ).stream()
