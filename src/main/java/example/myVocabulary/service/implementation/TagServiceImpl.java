@@ -47,7 +47,6 @@ public class TagServiceImpl implements TagService {
         if(tag == null)
             throw new NullEntityReferenceException("Cannot update empty tag object");
         try{
-            //Tag oldTag = readById(tag.getId());
             return tagRepository.save(tag);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -101,6 +100,5 @@ public class TagServiceImpl implements TagService {
             errors.add("Tag with name '" + name + "' exists already");
         }
         return errors;
-
     }
 }

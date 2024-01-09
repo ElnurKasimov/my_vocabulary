@@ -93,8 +93,6 @@ public class PracticeController {
                                      @RequestParam(name = "foreign") boolean[] foreign,
                                      @RequestParam(name = "translation") boolean[] translation,
                                      @RequestParam(name = "description") boolean[] description,
-//                                     @RequestParam(name = "words") List<Word> words,
-//                                     @RequestParam(name = "tagName") String tagName,
                                     Model model) {
         Tag tag = tagService.readById(id);
         List<Word> words = tag.getWords();
@@ -109,8 +107,6 @@ public class PracticeController {
         model.addAttribute("foreign", foreign);
         model.addAttribute("translation", translation);
         model.addAttribute("description", description);
-
-
         model.addAttribute("tags",
                 tagService.getAll( ).stream()
                         .map(tagTransformer::fromEntity)

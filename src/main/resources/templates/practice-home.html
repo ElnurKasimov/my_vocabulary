@@ -15,7 +15,6 @@
                 <select  id="tagName" name="tagName" style="font-size: 16px;">
                     <option value="" hidden>Select a tag using the arrow on the right</option>
                     <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
-<!--                            th:selected="${tagName != null && tagName == tag.name}"></option>-->
                 </select>
             </div>
             <div style="margin-left: 20px; font-size: 20px;">

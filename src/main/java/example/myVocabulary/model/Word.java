@@ -76,14 +76,4 @@ public class Word {
         this.tag = tag;
     }
 
-    //    @Override
-//    public String toString() {
-//        return "Word{" +
-//                "id=" + id +
-//                ", foreignWord='" + foreignWord + '\'' +
-//                ", translationWord='" + translationWord + '\'' +
-//                ", description='" + description + '\'' +
-//                ", tag=" + tag +
-//                '}';
-//    }
 }

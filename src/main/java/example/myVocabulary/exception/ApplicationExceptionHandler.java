@@ -72,10 +72,7 @@ public class ApplicationExceptionHandler {
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
         String stackTrace = sw.toString();
-//        if( (debugPropertyValue != null && debugPropertyValue.equals("true")) ||
-//                (debugEnvValue != null && debugEnvValue.equals("true")) ) {
-            modelAndView.addObject("stackTrace", stackTrace);
-//        }
+        modelAndView.addObject("stackTrace", stackTrace);
         return modelAndView;
     }
 

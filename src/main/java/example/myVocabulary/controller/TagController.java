@@ -31,9 +31,6 @@ public class TagController {
     public String getAllTags(@ModelAttribute(name = "errorId") Object errorId, Model model) {
         model.addAttribute("errorId", errorId);
         model.addAttribute("tags", tagService.getAll());
-//                tagService.getAll( ).stream()
-//                        .map(tagTransformer::fromEntity)
-//                        .collect(Collectors.toList()));
         return "tag/tag-list";
     }
 

@@ -21,6 +21,4 @@ public class WordResponseForCRUD {
         tagName = word.getTag().getName();
     }
 
-
-
 }
