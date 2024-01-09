@@ -35,7 +35,7 @@ public class PracticeController {
         tagService.getAll( ).stream()
                 .map(tagTransformer::fromEntity)
                 .collect(Collectors.toList()));
-    return "practice";
+    return "practice-home";
     }
 
     @PostMapping(value = {"/"})
@@ -50,8 +50,9 @@ public class PracticeController {
 
     @GetMapping(value = {"/{id}"})
     public String getTagForPractice(@PathVariable (name = "id") long id,
-                             @ModelAttribute(name = "translateDirection") String translateDirection,
-                             Model model) {
+                                    @ModelAttribute(name = "translateDirection") String translateDirection,
+                                    RedirectAttributes redirectAttributes,
+                                    Model model) {
         Tag tag = tagService.readById(id);
         List<Word> words = tag.getWords();
         model.addAttribute("words",
@@ -80,76 +81,35 @@ public class PracticeController {
                 tagService.getAll( ).stream()
                         .map(tagTransformer::fromEntity)
                         .collect(Collectors.toList()));
-        return "practice";
+        redirectAttributes.addFlashAttribute("translateDirection", translateDirection);
+        return "practice-tag";
     }
 
 
+    @PostMapping(value = {"/{id}"})
+    public String postTagForPractice(@PathVariable (name = "id") long id,
+                                     @ModelAttribute(name = "translateDirection") String translateDirection,
+                                     @RequestParam(name = "rowNumber") int rowNumber,
+                                     @RequestParam(name = "foreign") boolean[] foreign,
+                                     @RequestParam(name = "translation") boolean[] translation,
+                                     @RequestParam(name = "description") boolean[] description,
+                                     @RequestParam(name = "words") List<Word> words,
+                                     @RequestParam(name = "tagName") String tagName,
+                                    Model model) {
+        System.out.println("id = " + id);
+        model.addAttribute("tagName", tagName);
+        foreign[rowNumber] = true;
+        translation[rowNumber] = true;
+        description[rowNumber] = true;
+        model.addAttribute("foreign", foreign);
+        model.addAttribute("translation", translation);
+        model.addAttribute("description", description);
 
-//
-//    @GetMapping(value = {"/create"})
-//    public String getCreateTag(Model model) {
-//        model.addAttribute("tagRequest", new TagRequest());
-//        model.addAttribute("tags",
-//                tagService.getAll().stream()
-//                        .map(tagTransformer::fromEntity)
-//                        .collect(Collectors.toList()));
-//        return "tag/create";
-//    }
-//
-//    @PostMapping(value = {"/create"})
-//    public String postCreateTag(@ModelAttribute(name="tagRequest") @Valid TagRequest tagRequest, BindingResult bindingResult, Model model) {
-//        List<String> errors = tagService.getTagErrors(tagRequest.getName(), bindingResult);
-//        if (errors.isEmpty()) {
-//            Tag newTag = tagService.create(tagTransformer.toEntityFromRequest(tagRequest));
-//            return "redirect:/tags/" + newTag.getId();
-//        } else {
-//            model.addAttribute("errors", errors);
-//            model.addAttribute("tags",
-//                    tagService.getAll().stream()
-//                            .map(tagTransformer::fromEntity)
-//                            .collect(Collectors.toList()));
-//            return "/tag/create";
-//        }
-//    }
-//
-//    @GetMapping(value = {"/{id}/delete"})
-//    public String postDeleteTag(@PathVariable (name = "id") long id,  Model model,
-//                                RedirectAttributes redirectAttributes) {
-//        if (tagService.readById(id).getWords().isEmpty()) {
-//            tagService.delete(id);
-//        } else {
-//            Object errorId = id;
-//            redirectAttributes.addFlashAttribute("errorId", errorId);
-//        }
-//        return "redirect:/tags/";
-//    }
-//
-//    @GetMapping("/{id}/update")
-//    public String getUpdateTag(@PathVariable long id, Model model) {
-//    model.addAttribute("tag", tagService.readById(id));
-//        model.addAttribute("tags",
-//                tagService.getAll().stream()
-//                        .map(tagTransformer::fromEntity)
-//                        .collect(Collectors.toList()));
-//        return "tag/update";
-//    }
-//
-//    @PostMapping("/{id}/update")
-//    public String postUpdateTag(@PathVariable long id,
-//                                @ModelAttribute(name="tag") @Valid Tag tag,
-//                                BindingResult bindingResult, Model model) {
-//        List<String> errors = tagService.getTagErrors(tag.getName(), bindingResult);
-//        if (errors.isEmpty()) {
-//            tagService.update(tag);
-//            return "redirect:/tags/";
-//        } else {
-//            model.addAttribute("errors", errors);
-//            model.addAttribute("tags",
-//                    tagService.getAll().stream()
-//                            .map(tagTransformer::fromEntity)
-//                            .collect(Collectors.toList()));
-//            return "/tag/update";
-//        }
-//    }
-
+        model.addAttribute("words", words);
+        model.addAttribute("tags",
+                tagService.getAll( ).stream()
+                        .map(tagTransformer::fromEntity)
+                        .collect(Collectors.toList()));
+        return "practice-tag";
+    }
 }

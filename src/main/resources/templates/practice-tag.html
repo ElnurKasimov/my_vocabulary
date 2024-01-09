@@ -7,33 +7,10 @@
 </head>
 <body>
     <div th:replace="~{header :: header}"></div>
-
-    <form th:action="@{/practice/}" method="post">
-        <div class="form-practice">
-            <div style="flex: 1;">
-                <label for="tagName" style="font-size: 25px;">Tag for practice:</label>
-                <select  id="tagName" name="tagName" style="font-size: 16px;">
-                    <option value="" hidden>Select a tag using the arrow on the right</option>
-                    <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"></option>
-                </select>
-            </div>
-
-            <div style="margin-left: 20px; font-size: 20px;">
-                <input type="radio" id="direct" name="translateDirection" value="direct">
-                <label for="direct">from foreign to native</label>
-                <input type="radio" id="reverse" name="translateDirection" value="reverse">
-                <label for="reverse">from native to foreign</label>
-            </div>
-
-            <div style="margin-left: 40px;">
-                <button type="submit" class="standard-button">Choose</button>
-            </div>
-        </div>
-    </form>
-
-    <p th:if="${not #lists.isEmpty(words)}" style="font-size: 30px; color: #666;">
+    <p style="font-size: 25px; color: #666;">
         Practice for tag <b>'<span th:text="${tagName}"></span>'</b>:
     </p>
+
 
     <table  th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
         <tr>
@@ -56,8 +33,14 @@
                     <span th:text="${description[i.index] ? word.description : ''}"></span>
                 </td>
                 <td style="text-align: center;">
-                    <form th:action="@{/practice/}" method="post">
+                    <form th:action="@{/practice/{id} (id=${word.id})}" method="post">
+                        <input type="hidden" th:each="val : ${foreign}" th:name="foreign" th:value="${val}" />
+                        <input type="hidden" th:each="val : ${translation}" th:name="translation" th:value="${val}" />
+                        <input type="hidden" th:each="val : ${description}" th:name="description" th:value="${val}" />
+                        <input type="hidden" th:each="word : ${words}" th:name="words" th:value="${word}" />
+                        <input type="hidden" th:name="tagName" th:value="${tagName}" />
                         <input type="hidden" th:name="rowNumber" th:value="${i.index}" />
+                        <input type="hidden" th:name="translateDirection" th:value="${i.index}" />
                         <button type="submit">Check</button>
                     </form>
                 </td>

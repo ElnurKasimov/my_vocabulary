@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Practice page</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+    <div th:replace="~{header :: header}"></div>
+
+    <form th:action="@{/practice/{id}" method="post">
+        <div class="form-practice">
+            <div style="flex: 1;">
+                <label for="tagName" style="font-size: 25px;">Tag for practice:</label>
+                <select  id="tagName" name="tagName" style="font-size: 16px;">
+                    <option value="" hidden>Select a tag using the arrow on the right</option>
+                    <option th:each="tag : ${tags}" th:value="${tag.name}" th:text="${tag.name}"
+                            th:selected="${tagName != null && tagName == tag.name}"></option>
+                </select>
+            </div>
+            <div style="margin-left: 20px; font-size: 20px;">
+                <input type="radio" id="direct" name="translateDirection" value="direct">
+                <label for="direct">from foreign to native</label>
+                <input type="radio" id="reverse" name="translateDirection" value="reverse">
+                <label for="reverse">from native to foreign</label>
+            </div>
+
+            <div style="margin-left: 40px;">
+                <button type="submit" class="standard-button">Choose</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
