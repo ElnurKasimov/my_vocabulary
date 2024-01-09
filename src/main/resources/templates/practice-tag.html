@@ -8,9 +8,8 @@
 <body>
     <div th:replace="~{header :: header}"></div>
     <p style="font-size: 25px; color: #666;">
-        Practice for tag <b>'<span th:text="${tagName}"></span>'</b>:
+        Practice for tag <b>'<span th:text="${tag.name}"></span>'</b>:
     </p>
-
 
     <table  th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
         <tr>
@@ -33,14 +32,14 @@
                     <span th:text="${description[i.index] ? word.description : ''}"></span>
                 </td>
                 <td style="text-align: center;">
-                    <form th:action="@{/practice/{id} (id=${word.id})}" method="post">
+                    <form th:action="@{/practice/{id} (id=${tag.id})}" method="post">
                         <input type="hidden" th:each="val : ${foreign}" th:name="foreign" th:value="${val}" />
                         <input type="hidden" th:each="val : ${translation}" th:name="translation" th:value="${val}" />
                         <input type="hidden" th:each="val : ${description}" th:name="description" th:value="${val}" />
-                        <input type="hidden" th:each="word : ${words}" th:name="words" th:value="${word}" />
-                        <input type="hidden" th:name="tagName" th:value="${tagName}" />
+<!--                        <input type="hidden" th:each="word : ${words}" th:name="words" th:value="${word}" />-->
+<!--                        <input type="hidden" th:name="tagName" th:value="${tagName}" />-->
                         <input type="hidden" th:name="rowNumber" th:value="${i.index}" />
-                        <input type="hidden" th:name="translateDirection" th:value="${i.index}" />
+<!--                        <input type="hidden" th:name="translateDirection" th:value="${i.index}" />-->
                         <button type="submit">Check</button>
                     </form>
                 </td>

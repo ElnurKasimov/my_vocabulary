@@ -56,10 +56,10 @@ public class PracticeController {
         Tag tag = tagService.readById(id);
         List<Word> words = tag.getWords();
         model.addAttribute("words",
-                words.stream()
+                        words.stream()
                         .map(wordTransformer::fromEntityForCRUD)
                         .collect(Collectors.toList()));
-        model.addAttribute("tagName", tag.getName());
+        model.addAttribute("tag", tag);
         boolean[] foreign = new boolean[words.size()];
         boolean[] translation = new boolean[words.size()];
         boolean[] description = new boolean[words.size()];
@@ -93,11 +93,16 @@ public class PracticeController {
                                      @RequestParam(name = "foreign") boolean[] foreign,
                                      @RequestParam(name = "translation") boolean[] translation,
                                      @RequestParam(name = "description") boolean[] description,
-                                     @RequestParam(name = "words") List<Word> words,
-                                     @RequestParam(name = "tagName") String tagName,
+//                                     @RequestParam(name = "words") List<Word> words,
+//                                     @RequestParam(name = "tagName") String tagName,
                                     Model model) {
-        System.out.println("id = " + id);
-        model.addAttribute("tagName", tagName);
+        Tag tag = tagService.readById(id);
+        List<Word> words = tag.getWords();
+        model.addAttribute("words",
+                words.stream()
+                        .map(wordTransformer::fromEntityForCRUD)
+                        .collect(Collectors.toList()));
+        model.addAttribute("tag", tag);
         foreign[rowNumber] = true;
         translation[rowNumber] = true;
         description[rowNumber] = true;
@@ -105,7 +110,7 @@ public class PracticeController {
         model.addAttribute("translation", translation);
         model.addAttribute("description", description);
 
-        model.addAttribute("words", words);
+
         model.addAttribute("tags",
                 tagService.getAll( ).stream()
                         .map(tagTransformer::fromEntity)
