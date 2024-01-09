@@ -37,10 +37,11 @@
 
     <table  th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
         <tr>
-            <th style="width: 3%">&numero;</th>
-            <th style="width: 17%">Word</th>
-            <th style="width: 24%">Translation</th>
-            <th style="width: 40%">Description</th>
+            <th style="width: 5%">&numero;</th>
+            <th style="width: 20%">Word</th>
+            <th style="width: 28%">Translation</th>
+            <th style="width: 37%">Description</th>
+            <th style="width: 10%">Action</th>
         </tr>
         <tbody>
             <tr th:each="word, i : ${words}">
@@ -53,6 +54,12 @@
                 </td>
                 <td>
                     <span th:text="${description[i.index] ? word.description : ''}"></span>
+                </td>
+                <td style="text-align: center;">
+                    <form th:action="@{/practice/}" method="post">
+                        <input type="hidden" th:name="rowNumber" th:value="${i.index}" />
+                        <button type="submit">Check</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
