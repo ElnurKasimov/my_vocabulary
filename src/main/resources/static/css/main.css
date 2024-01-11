@@ -176,12 +176,11 @@ header {
 }
 
 .form-practice {
-    width: 80%;
+    width: 50%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     color: #666;
-    margin: 10px 10px 10px;
+    margin: 20px 5px;
 }
 
 
