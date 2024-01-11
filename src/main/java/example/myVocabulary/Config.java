@@ -32,7 +32,9 @@ public class Config implements WebServerFactoryCustomizer<ConfigurableServletWeb
     }
 
     private boolean databaseFileExists() {
-        File databaseFile = new File("./database.mv.db");
+        String currentDirectory = System.getProperty("user.dir");
+        System.out.println("Current Directory: " + currentDirectory);
+        File databaseFile = new File(currentDirectory, "database.mv.db");
         return databaseFile.exists();
     }
 }
