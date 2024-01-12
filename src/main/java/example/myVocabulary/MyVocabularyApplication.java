@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConf
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 @SpringBootApplication
+@ComponentScan(basePackages = "example.myVocabulary")
 public class MyVocabularyApplication {
 
 	public static void main(String[] args) {
