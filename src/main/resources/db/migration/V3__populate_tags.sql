@@ -1,10 +1,8 @@
-INSERT INTO tags (id, name)
-VALUES
-    (1, 'Tag 1'),
-    (2, 'Tag 2'),
-    (3, 'New Tag 1'),
-    (4, 'New Tag 2'),
-    (5, 'Other tag 1'),
-    (6, 'Other tag 2'),
-    (7, 'Another tag 1'),
-    (8, 'Another tag 2');
+INSERT INTO tags (name) SELECT 'Sales' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'Sales');
+INSERT INTO tags (name) SELECT 'Programming' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'Programming');
+INSERT INTO tags (name) SELECT 'Negotiations' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'Negotiations');
+INSERT INTO tags (name) SELECT 'Learning' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'Learning');
+INSERT INTO tags (name) SELECT 'Activities' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'Activities');
+INSERT INTO tags (name) SELECT 'IT' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'IT');
+INSERT INTO tags (name) SELECT 'Interview' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'Interview');
+INSERT INTO tags (name) SELECT 'Business' WHERE NOT EXISTS (SELECT 1 FROM tags WHERE name = 'Business');

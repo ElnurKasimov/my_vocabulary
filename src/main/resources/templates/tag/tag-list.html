@@ -11,12 +11,14 @@
         <table style ="width : 40%">
             <tr>
                 <th style ="width : 10%" >&numero;</th>
+<!--                <th style ="width : 10%" >Id</th>-->
                 <th style ="width : 50%">Name</th>
                 <th style ="width : 30%" colspan="2">Operations</th>
             </tr>
             <tbody>
                 <tr th:each="tag, i : ${tags}">
                     <td th:text="${i.index + 1}"></td>
+<!--                    <td th:text="${tag.id}"></td>-->
                     <td><a th:href="@{/tags/{id}(id=${tag.id})}"th:text="${tag.Name}" class="tag-link"></a></td>
                     <td><a th:href="@{/tags/{id}/update(id=${tag.id})}" class="tag-link">Edit</a></td>
                     <td><a th:href="@{/tags/{id}/delete(id=${tag.id})}" class="remove-link">Remove</a></td>

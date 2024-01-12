@@ -11,11 +11,13 @@ import org.springframework.http.HttpStatus;
 
 import javax.sql.DataSource;
 import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Configuration
 @RequiredArgsConstructor
 public class Config implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
-    private final DataSource dataSource;
 
     @Override
     public void customize(ConfigurableServletWebServerFactory factory) {
@@ -24,17 +26,9 @@ public class Config implements WebServerFactoryCustomizer<ConfigurableServletWeb
     }
 
     @PostConstruct
-    public void migrateDatabase() {
-        if (!databaseFileExists()) {
-            Flyway flyway = Flyway.configure().dataSource(dataSource).load();
-            flyway.migrate();
-        }
-    }
-
-    private boolean databaseFileExists() {
-        String currentDirectory = System.getProperty("user.dir");
-        System.out.println("Current Directory: " + currentDirectory);
-        File databaseFile = new File(currentDirectory, "database.mv.db");
-        return databaseFile.exists();
+    private void getStartDirectory() {
+        Path currentDirectoryPath = FileSystems.getDefault().getPath("");
+        String currentDirectoryName = currentDirectoryPath.toAbsolutePath().toString();
+        System.out.println("Current Directory = \"" + currentDirectoryName + "\"");
     }
 }
