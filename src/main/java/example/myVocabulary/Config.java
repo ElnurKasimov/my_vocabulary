@@ -28,6 +28,8 @@ public class Config implements WebServerFactoryCustomizer<ConfigurableServletWeb
         if (!databaseFileExists()) {
             Flyway flyway = Flyway.configure().dataSource(dataSource).load();
             flyway.migrate();
+        } else {
+            System.out.println("database is present");
         }
     }
 
