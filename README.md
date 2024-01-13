@@ -1,6 +1,3 @@
-## My vocabulary
-
-
 ## **Foreword**
 
 The reason for writing this application was a request from my friends to get a simple desktop program - a foreign words tutor. Since they were far from programming, they needed a project with minimum requirements for additional software.  
