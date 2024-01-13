@@ -21,7 +21,7 @@ Regardless of where your jar file is placed, the database will be created in the
 The name of data base is 'database.mv.db'  
 If you want to use several data bases you must use such command for launch  
 &nbsp;&nbsp;&nbsp;&nbsp;java -jar "path\to\your_jarfile\name_of_your_jar_file.jar" --spring.datasource.url=jdbc:h2:file:"path\to\your_another_database\database"  
-In this case You can use different directories to store different languages like '/ENGLISH', '/ARABIV'  and so on.   
+In this case You can use different directories to store different languages like '/ENGLISH', '/ARABIС'  and so on.   
 The application uses migrations to create the database structure and fill it with the initial values.  
 If you launch the application first time the database with initial values will be created in the directory where your JVM is located.  
 Every next launch the application will use the actual state of the database.  
@@ -29,7 +29,7 @@ If there is no data base in 'path\to\your_another_database' it will be the same 
 
 ## **How to use the application**
 
-After launching the application, you may see a lot of messages from Spring in the console. The last one should be.  
+After launching the application, you may see a lot of messages from Spring in the console. The last one should be  
 "TO WORK WITH THE DICTIONARY VISIT"  
 "http://localhost:8080"  
 This means that all the functionality of the application is available on localhost:8080.  
