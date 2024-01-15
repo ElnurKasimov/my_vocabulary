@@ -15,7 +15,7 @@ The practice of memorizing words is also available.
 After cloning the project to your computer, create an executable file. Use the './gradlew build' command to do this.  
 The file named 'myVocabulary-0.0.1-SNAPSHOT' will appear in the folder '\my_vocabulary\build\libs'.  
 You can copy it, put it wherever you like, and rename it (if you want).  
-To launch the application use in command line command  
+To launch the application use followed command in command line
 &nbsp;&nbsp;&nbsp;&nbsp;java -jar "path\to\your_jarfile\name_of_your_jar_file.jar"  
 Regardless of where your jar file is placed, the database will be created in the directory where your JVM is located.  
 The name of data base is 'database.mv.db'  
