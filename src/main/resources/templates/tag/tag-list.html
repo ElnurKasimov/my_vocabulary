@@ -10,16 +10,18 @@
         <h2> All Tags </h2>
         <table style ="width : 40%">
             <tr>
-                <th style ="width : 10%" >&numero;</th>
-                <th style ="width : 50%">Name</th>
-                <th style ="width : 30%" colspan="2">Operations</th>
+                <th style ="width : 7%" >&numero;</th>
+                <th style ="width : 51%">Name</th>
+                <th style ="width : 15%" >Words quantity</th>
+                <th style ="width : 27%" colspan="2">Operations</th>
             </tr>
             <tbody>
                 <tr th:each="tag, i : ${tags}">
                     <td th:text="${i.index + 1}"></td>
-                    <td><a th:href="@{/tags/{id}(id=${tag.id})}"th:text="${tag.Name}" class="tag-link"></a></td>
-                    <td><a th:href="@{/tags/{id}/update(id=${tag.id})}" class="tag-link">Edit</a></td>
-                    <td><a th:href="@{/tags/{id}/delete(id=${tag.id})}" class="remove-link">Remove</a></td>
+                    <td ><a th:href="@{/tags/{id}(id=${tag.id})}"th:text="${tag.Name}" class="tag-link"></a></td>
+                    <td style ="text-align: center;" th:text="${tag.words.size()}"></td>
+                    <td style ="text-align: center;"><a th:href="@{/tags/{id}/update(id=${tag.id})}" class="tag-link">Edit</a></td>
+                    <td style ="text-align: center;"><a th:href="@{/tags/{id}/delete(id=${tag.id})}" class="remove-link">Remove</a></td>
                     <td th:if="${tag.id == errorId}" class="errorDelete">
                         It's impossible to remove the tag if there is at least one word with such a tag. <br>
                         Please remove all words from the tag or replace them into another one.
