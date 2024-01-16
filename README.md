@@ -15,7 +15,7 @@ The practice of memorizing words is also available.
 After cloning the project to your computer, create an executable file. Use the './gradlew build' command to do this.  
 The file named 'myVocabulary-0.0.1-SNAPSHOT' will appear in the folder '\my_vocabulary\build\libs'.  
 You can copy it, put it wherever you like, and rename it (if you want).  
-To launch the application use followed command in command line
+To launch the application use followed command in command console
 &nbsp;&nbsp;&nbsp;&nbsp;java -jar "path\to\your_jarfile\name_of_your_jar_file.jar"  
 Regardless of where your jar file is placed, the database will be created in the directory where your JVM is located.  
 The name of data base is 'database.mv.db'  
@@ -24,7 +24,7 @@ If you want to use several data bases you must use such command for launch
 In this case You can use different directories to store different languages like '/ENGLISH', '/ARABIС'  and so on.   
 The application uses migrations to create the database structure and fill it with the initial values.  
 If you launch the application first time the database with initial values will be created in the directory where your JVM is located.  
-Every next launch the application will use the actual state of the database.  
+Every next launch the application will use the actual state database.  
 If there is no data base in 'path\to\your_another_database' it will be the same scenario.  
 
 ## **How to use the application**
