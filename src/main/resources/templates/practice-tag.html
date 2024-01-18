@@ -43,6 +43,22 @@
             </tr>
         </tbody>
     </table>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        document.addEventListener('DOMContentLoaded', function() {
+            var rowNumber = /*[[${rowNumber}]]*/ null;
+
+            if (rowNumber !== null) {
+                var row = document.querySelector('tr:nth-child(' + (parseInt(rowNumber) + 1) + ')');
+                if (row !== null) {
+                    row.scrollIntoView();
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+
 </body>
 </html>
 

@@ -111,6 +111,7 @@ public class PracticeController {
                 tagService.getAll( ).stream()
                         .map(tagTransformer::fromEntity)
                         .collect(Collectors.toList()));
+        model.addAttribute("rowNumber", rowNumber);
         return "practice-tag";
     }
 }
