@@ -8,6 +8,7 @@ import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -55,6 +56,7 @@ public class PracticeController {
     public String getTagForPractice(@PathVariable (name = "id") long id,
                                     @ModelAttribute(name = "translateDirection") String translateDirection,
                                     RedirectAttributes redirectAttributes,
+                                    HttpSession session,
                                     Model model) {
         Tag tag = tagService.readById(id);
         List<WordResponseForCRUD> words = tag.getWords().stream()
@@ -86,6 +88,7 @@ public class PracticeController {
                         .map(tagTransformer::fromEntity)
                         .collect(Collectors.toList()));
         redirectAttributes.addFlashAttribute("translateDirection", translateDirection);
+        session.setAttribute("words", toPractice);
         return "practice-tag";
     }
 
@@ -97,15 +100,10 @@ public class PracticeController {
                                      @RequestParam(name = "foreign") boolean[] foreign,
                                      @RequestParam(name = "translation") boolean[] translation,
                                      @RequestParam(name = "description") boolean[] description,
-                                    Model model) {
-        Tag tag = tagService.readById(id);
-        List<WordResponseForCRUD> words = tag.getWords().stream()
-                .map(wordTransformer::fromEntityForCRUD)
-                .toList();
-        List<WordResponseForCRUD> toPractice = new ArrayList<>(words);
-        Collections.shuffle(toPractice);
+                                     HttpSession session, Model model) {
+        List<WordResponseForCRUD> toPractice = (List<WordResponseForCRUD>) session.getAttribute("words");
         model.addAttribute("words", toPractice);
-        model.addAttribute("tag", tag);
+        model.addAttribute("tag", tagService.readById(id));
         foreign[rowNumber] = true;
         translation[rowNumber] = true;
         description[rowNumber] = true;
