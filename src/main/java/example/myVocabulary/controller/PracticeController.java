@@ -2,6 +2,7 @@ package example.myVocabulary.controller;
 
 import example.myVocabulary.dto.TagRequest;
 import example.myVocabulary.dto.TagTransformer;
+import example.myVocabulary.dto.WordResponseForCRUD;
 import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,11 +57,12 @@ public class PracticeController {
                                     RedirectAttributes redirectAttributes,
                                     Model model) {
         Tag tag = tagService.readById(id);
-        List<Word> words = tag.getWords();
-        model.addAttribute("words",
-                        words.stream()
-                        .map(wordTransformer::fromEntityForCRUD)
-                        .collect(Collectors.toList()));
+        List<WordResponseForCRUD> words = tag.getWords().stream()
+                .map(wordTransformer::fromEntityForCRUD)
+                .toList();
+        List<WordResponseForCRUD> toPractice = new ArrayList<>(words);
+        Collections.shuffle(toPractice);
+        model.addAttribute("words", toPractice);
         model.addAttribute("tag", tag);
         boolean[] foreign = new boolean[words.size()];
         boolean[] translation = new boolean[words.size()];
@@ -95,11 +99,12 @@ public class PracticeController {
                                      @RequestParam(name = "description") boolean[] description,
                                     Model model) {
         Tag tag = tagService.readById(id);
-        List<Word> words = tag.getWords();
-        model.addAttribute("words",
-                words.stream()
-                        .map(wordTransformer::fromEntityForCRUD)
-                        .collect(Collectors.toList()));
+        List<WordResponseForCRUD> words = tag.getWords().stream()
+                .map(wordTransformer::fromEntityForCRUD)
+                .toList();
+        List<WordResponseForCRUD> toPractice = new ArrayList<>(words);
+        Collections.shuffle(toPractice);
+        model.addAttribute("words", toPractice);
         model.addAttribute("tag", tag);
         foreign[rowNumber] = true;
         translation[rowNumber] = true;
