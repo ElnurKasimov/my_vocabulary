@@ -8,10 +8,12 @@ class WordControllerTest {
 
     @Test
     void getAllWords() {
+
     }
 
     @Test
     void getFindWord() {
+
     }
 
     @Test
