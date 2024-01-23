@@ -1,11 +1,17 @@
 package example.myVocabulary.controller;
 
+import example.myVocabulary.model.Tag;
+import example.myVocabulary.model.Word;
+import example.myVocabulary.service.TagService;
+import example.myVocabulary.service.WordService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -14,6 +20,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class WordControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private TagService tagService;
+    @Autowired
+    private WordService wordService;
 
     @Test
     @DisplayName("Test that GET  /words/  works correctly")
@@ -38,14 +48,26 @@ class WordControllerTest {
     @Test
     @DisplayName("Test that POST  /words/find  works correctly")
     void postFindWord() throws Exception {
+        Tag testTag = new Tag();
+        testTag.setName("tag1");
+        tagService.create(testTag);
+        Word testWord = new Word();
+        testWord.setForeignWord("test");
+        testWord.setTranslationWord("тест");
+        testWord.setDescription("testing process");
+        testWord.setTag(testTag);
+        Word expected = wordService.create(testWord);
         this.mockMvc
                 .perform(post("/words/find")
-                        .param("wordPart", "wordPart"))
+                        .param("wordPart", "test"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/find"))
                 .andExpect(model().attributeExists("searchPerformed"))
                 .andExpect(model().attributeExists("words"))
                 .andExpect(model().attributeExists("word"));
+
+
+//        assertEquals()
     }
 
     @Test
