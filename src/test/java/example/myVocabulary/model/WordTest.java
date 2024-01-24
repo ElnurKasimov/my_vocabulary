@@ -6,10 +6,13 @@ import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import java.util.Set;
-import static org.junit.jupiter.api.Assertions.*;
 
-class TagTest {
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+class WordTest {
 
     @Test
     @DisplayName("Test test that field 'name' of the Tag not empty")
