@@ -28,7 +28,6 @@ public class Word {
     private String translationWord;
 
     @Column (name="description")
-
     private String description;
 
     @NotNull(message = "The 'tag' cannot be null")
