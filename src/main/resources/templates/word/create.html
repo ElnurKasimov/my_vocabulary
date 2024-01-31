@@ -72,12 +72,14 @@
                         <th>&numero;</th>
                         <th>Word</th>
                         <th>Translation</th>
+                        <th>Translation</th>
                     </tr>
                     <tbody>
                     <tr th:each="word, i : ${tag.words}">
                         <td th:text="${i.index + 1}"></td>
                         <td th:text="${word.foreignWord}"></td>
                         <td th:text="${word.translationWord}"></td>
+                        <td th:text="${word.description}"></td>
                     </tr>
                     </tbody>
                 </table>
