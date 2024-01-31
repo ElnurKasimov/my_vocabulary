@@ -69,6 +69,14 @@ header {
     padding: 5px 10px;
 }
 
+/*
+.word_table_container {
+   overflow-y: auto;
+   max-height: 100vh;
+}
+*/
+
+
 .row {
     display: flex;
     justify-content: space-between;
