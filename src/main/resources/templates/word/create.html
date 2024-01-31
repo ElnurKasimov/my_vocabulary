@@ -11,8 +11,20 @@
             max-height: 90vh;
         }
     </style>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function scrollToBottom() {
+            var tableContainer = document.getElementById('word_table_container');
+            tableContainer.scrollTop = tableContainer.scrollHeight;
+        }
+        var scrollToBottomParam = /*[[${scrollToBottom}]]*/ false;
+        if (scrollToBottomParam) {
+            scrollToBottom();
+        }
+        /*]]>*/
+    </script>
 </head>
-<body>
+<body onload="scrollToBottom()">
     <div th:replace="~{header :: header}"></div>
     <div class="word">
         <div class="section_left_for_word">
@@ -54,7 +66,7 @@
         </div>
         <div class="section_right_for_word" th:if="${tag}">
             <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tag.name}"></span>'</b></p>
-            <div class="word_table_container">
+            <div class="word_table_container" id="word_table_container">
                 <table style="width : 100%">
                     <tr>
                         <th>&numero;</th>

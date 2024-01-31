@@ -81,6 +81,7 @@ public class WordController {
                 .toList();
         model.addAttribute("tags",tags);
         model.addAttribute("wordRequest", new WordRequest());
+        model.addAttribute("scrollToBottom", true);
         return "word/create";
     }
 
