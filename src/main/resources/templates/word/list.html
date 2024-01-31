@@ -4,30 +4,38 @@
     <meta charset="UTF-8">
     <title>List of Words</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <style>
+        .scrolling_container {
+           overflow-y: auto;
+           max-height: 88vh;
+       }
+    </style>
 </head>
     <body>
         <div th:replace="~{header :: header}"></div>
         <br>
-        <table style ="width : 100%">
-            <tr>
-                <th style="width: 5%">&numero;</th>
-                <th style="width: 17%">Word</th>
-                <th style="width: 17%">Translation</th>
-                <th style="width: 25%">Description</th>
-                <th style="width: 13%">Tag</th>
-                <th style="width: 13%" colspan="2">Operations</th>
-            </tr>
-            <tbody>
-                <tr th:each="word, i : ${words}">
-                    <td th:text="${i.index + 1}"></td>
-                    <td th:text="${word.foreignWord}"></td>
-                    <td th:text="${word.translationWord}"></td>
-                    <td th:text="${word.description}"></td>
-                    <td th:text="${word.tagName}"></td>
-                    <td><a th:href="@{/words/{id}/update(id=${word.id})}" class="tag-link">Edit</a></td>
-                    <td><a th:href="@{/words/{id}/delete(id=${word.id})}" class="remove-link">Remove</a></td>
+        <div class="scrolling_container">
+            <table style ="width : 100%">
+                <tr>
+                    <th style="width: 5%">&numero;</th>
+                    <th style="width: 17%">Word</th>
+                    <th style="width: 17%">Translation</th>
+                    <th style="width: 25%">Description</th>
+                    <th style="width: 13%">Tag</th>
+                    <th style="width: 13%" colspan="2">Operations</th>
                 </tr>
-            </tbody>
-        </table>
+                <tbody>
+                    <tr th:each="word, i : ${words}">
+                        <td th:text="${i.index + 1}"></td>
+                        <td th:text="${word.foreignWord}"></td>
+                        <td th:text="${word.translationWord}"></td>
+                        <td th:text="${word.description}"></td>
+                        <td th:text="${word.tagName}"></td>
+                        <td><a th:href="@{/words/{id}/update(id=${word.id})}" class="tag-link">Edit</a></td>
+                        <td><a th:href="@{/words/{id}/delete(id=${word.id})}" class="remove-link">Remove</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
