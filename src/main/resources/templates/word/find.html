@@ -20,10 +20,10 @@
             <button type="submit" class="standard-button">Search</button>
         </form>
         <th:block th:if="${searchPerformed}">
-            <p style="font-size: 20px;" th:if="${#lists.isEmpty(words)}">
+            <p style="color: #666; font-size: 20px; padding: 0 15px;" th:if="${#lists.isEmpty(words)}">
                 There is no records which contain the word <b>'<span th:text="${word}"></span>'</b> in Your vocabulary.
             </p>
-            <p style="font-size: 20px;" th:if="${not #lists.isEmpty(words)}">
+            <p style="color: #666; font-size: 20px; padding: 0 15px;" th:if="${not #lists.isEmpty(words)}">
                 Here are all records which contain the word <b>'<span th:text="${word}"></span>'</b>:
             </p>
             <div class="scrolling_container" th:if="${not #lists.isEmpty(words)}">
