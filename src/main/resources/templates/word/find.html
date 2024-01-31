@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Find the Word</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <style>
+        .scrolling_container {
+           overflow-y: auto;
+           max-height: 70vh;
+       }
+    </style>
 </head>
     <body>
         <div th:replace="~{header :: header}"></div>
@@ -15,27 +21,29 @@
         </form>
         <th:block th:if="${searchPerformed}">
             <p style="font-size: 20px;" th:if="${#lists.isEmpty(words)}">
-                There is no word <b>'<span th:text="${word}"></span>'</b> in Your vocabulary.
+                There is no records which contain the word <b>'<span th:text="${word}"></span>'</b> in Your vocabulary.
             </p>
-            <table style ="width : 100%" th:if="${not #lists.isEmpty(words)}">
-                <p style="font-size: 20px;">
-                    Here are all records which contain the word <b>'<span th:text="${word}"></span>'</b>:
-                </p>
-                <tr>
-                    <th style="width: 20%">Word</th>
-                    <th style="width: 20%">Translation</th>
-                    <th style="width: 40%">Description</th>
-                    <th style="width: 20%">Tag</th>
-                </tr>
-                <tbody>
-                    <tr th:each="word, i : ${words}">
-                        <td th:text="${word.foreignWord}"></td>
-                        <td th:text="${word.translationWord}"></td>
-                        <td th:text="${word.description}"></td>
-                        <td><a th:href="@{/tags/{id}(id=${word.tag.id})}" class="tag-link" th:text="${word.tag.name}"></a></td>
+            <p style="font-size: 20px;" th:if="${not #lists.isEmpty(words)}">
+                Here are all records which contain the word <b>'<span th:text="${word}"></span>'</b>:
+            </p>
+            <div class="scrolling_container" th:if="${not #lists.isEmpty(words)}">
+                <table style ="width : 100%" >
+                    <tr>
+                        <th style="width: 20%">Word</th>
+                        <th style="width: 20%">Translation</th>
+                        <th style="width: 40%">Description</th>
+                        <th style="width: 20%">Tag</th>
                     </tr>
-                </tbody>
-            </table>
+                    <tbody>
+                        <tr th:each="word, i : ${words}">
+                            <td th:text="${word.foreignWord}"></td>
+                            <td th:text="${word.translationWord}"></td>
+                            <td th:text="${word.description}"></td>
+                            <td><a th:href="@{/tags/{id}(id=${word.tag.id})}" class="tag-link" th:text="${word.tag.name}"></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </th:block>
     </body>
 </html>
