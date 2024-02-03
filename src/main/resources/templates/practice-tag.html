@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Practice page</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <style>
+        .scrolling_container {
+           overflow-y: auto;
+           max-height: 70vh;
+       }
+    </style>
 </head>
 <body>
     <div th:replace="~{header :: header}"></div>
@@ -11,27 +17,30 @@
         Practice for tag <b>'<span th:text="${tag.name}"></span>'</b>:
     </p>
 
-    <table  th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
-        <tr>
-            <th style="width: 5%">&numero;</th>
-            <th style="width: 20%">Word</th>
-            <th style="width: 28%">Translation</th>
-            <th style="width: 37%">Description</th>
-            <th style="width: 10%">Action</th>
-        </tr>
-        <tbody>
+        <table th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
+            <tr>
+                <th style="width: 5%">&numero;</th>
+                <th style="width: 20%">Word</th>
+                <th style="width: 28%">Translation</th>
+                <th style="width: 37%">Description</th>
+                <th style="width: 10%">Action</th>
+            </tr>
+        </table>
+        <div class="scrolling_container" th:if="${not #lists.isEmpty(words)}">
+            <table style ="width : 100%">
+            <tbody class="scrolling_container">
             <tr th:each="word, i : ${words}">
-                <td th:text="${i.index + 1}"></td>
-                <td>
+                <td style="width: 5%" th:text="${i.index + 1}"></td>
+                <td style="width: 20%">
                     <span th:text="${foreign[i.index] ? word.foreignWord : ''}" ></span>
                 </td>
-                <td>
+                <td style="width: 28%">
                     <span th:text="${translation[i.index] ? word.translationWord : ''}"></span>
                 </td>
-                <td>
+                <td style="width: 37%">
                     <span th:text="${description[i.index] ? word.description : ''}"></span>
                 </td>
-                <td style="text-align: center;">
+                <td style="text-align: center; width: 8.75%">
                     <form th:action="@{/practice/{id} (id=${tag.id})}" method="post">
                         <input type="hidden" th:each="val : ${foreign}" th:name="foreign" th:value="${val}" />
                         <input type="hidden" th:each="val : ${translation}" th:name="translation" th:value="${val}" />
@@ -41,8 +50,9 @@
                     </form>
                 </td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        </div>
 
     <script th:inline="javascript">
         /*<![CDATA[*/

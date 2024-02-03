@@ -8,7 +8,7 @@
     <style>
          .word_table_container {
             overflow-y: auto;
-            max-height: 70vh;
+            max-height: 69vh;
         }
     </style>
     <script th:inline="javascript">
@@ -66,20 +66,22 @@
         </div>
         <div class="section_right_for_word" th:if="${tag}">
             <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tag.name}"></span>'</b></p>
+            <table style="width : 100%">
+                <tr>
+                    <th style="width: 5%">&numero;</th>
+                    <th style="width: 20%">Word</th>
+                    <th style="width: 25%">Translation</th>
+                    <th style="width: 50%">Description</th>
+                </tr>
+            </table>
             <div class="word_table_container" id="word_table_container">
                 <table style="width : 100%">
-                    <tr>
-                        <th style="width: 5%">&numero;</th>
-                        <th style="width: 20%">Word</th>
-                        <th style="width: 25%">Translation</th>
-                        <th style="width: 50%">Description</th>
-                    </tr>
                     <tbody>
                     <tr th:each="word, i : ${tag.words}">
-                        <td th:text="${i.index + 1}"></td>
-                        <td th:text="${word.foreignWord}"></td>
-                        <td th:text="${word.translationWord}"></td>
-                        <td th:text="${word.description}"></td>
+                        <td style="width: 5%" th:text="${i.index + 1}"></td>
+                        <td style="width: 20%" th:text="${word.foreignWord}"></td>
+                        <td style="width: 25%" th:text="${word.translationWord}"></td>
+                        <td style="width: 48%" th:text="${word.description}"></td>
                     </tr>
                     </tbody>
                 </table>
