@@ -9,9 +9,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-
+import java.util.ArrayList;
+import java.util.List;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -20,10 +24,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class WordControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private TagService tagService;
-    @Autowired
+
+    @MockBean
     private WordService wordService;
+
+    @MockBean
+    private TagService tagService;
 
     @Test
     @DisplayName("Test that GET  /words/  works correctly")
@@ -46,30 +52,61 @@ class WordControllerTest {
     }
 
     @Test
-    @DisplayName("Test that POST  /words/find  works correctly")
-    void postFindWord() throws Exception {
-        Tag testTag = new Tag();
-        testTag.setName("tag1");
-        tagService.create(testTag);
-        Word testWord = new Word();
-        testWord.setForeignWord("test");
-        testWord.setTranslationWord("тест");
-        testWord.setDescription("testing process");
-        testWord.setTag(testTag);
-        Word expected = wordService.create(testWord);
+    @DisplayName("Test that POST  /words/find  works correctly and finds among foreign words")
+    void postFindWordAmongForeign() throws Exception {
+        Tag mockTag = new Tag();
+        mockTag.setId(1L);
+        mockTag.setName("tag1");
+        Word mockWord = new Word();
+        mockWord.setId(1L);
+        mockWord.setForeignWord("test");
+        mockWord.setTranslationWord("тест");
+        mockWord.setDescription("testing process");
+        mockWord.setTag(mockTag);
+        List<Word> expected = new ArrayList<>();
+        expected.add(mockWord);
+        when(wordService.readByWordPart("es")).thenReturn(expected);
         this.mockMvc
                 .perform(post("/words/find")
-                        .param("wordPart", "test"))
+                        .param("wordPart", "es"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/find"))
                 .andExpect(model().attributeExists("searchPerformed"))
                 .andExpect(model().attributeExists("words"))
-                .andExpect(model().attributeExists("word"));
-
-
-//        assertEquals()
+                .andExpect(model().attributeExists("word"))
+                .andExpect(model().attribute("words", hasSize(1)))
+                .andExpect(model().attribute("words", contains(mockWord)));
     }
 
+    @Test
+    @DisplayName("Test that POST  /words/find  works correctly and finds among translations")
+    void postFindWordAmongTranslations() throws Exception {
+        Tag mockTag = new Tag();
+        mockTag.setId(1L);
+        mockTag.setName("tag1");
+        Word mockWord = new Word();
+        mockWord.setId(1L);
+        mockWord.setForeignWord("test");
+        mockWord.setTranslationWord("тест");
+        mockWord.setDescription("testing process");
+        mockWord.setTag(mockTag);
+        List<Word> expected = new ArrayList<>();
+        expected.add(mockWord);
+        when(wordService.readByWordPart("ест")).thenReturn(expected);
+        this.mockMvc
+                .perform(post("/words/find")
+                        .param("wordPart", "ест"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("word/find"))
+                .andExpect(model().attributeExists("searchPerformed"))
+                .andExpect(model().attributeExists("words"))
+                .andExpect(model().attributeExists("word"))
+                .andExpect(model().attribute("words", hasSize(1)))
+                .andExpect(model().attribute("words", contains(mockWord)));
+    }
+
+
+    //TODO  cover 'create' with mocks
     @Test
     @DisplayName("Test that GET  /words/create  works correctly")
     void getCreatedWord() throws Exception {
@@ -93,9 +130,17 @@ class WordControllerTest {
                 .andExpect(model().attributeExists("errors"));
     }
 
-    @Test
-    void getDeleteWord() {
-    }
+//    @Test
+//    @DisplayName("Test that GET  /words/{id}/delete works correctly")
+//    void getDeleteWord() throws Exception {
+//        this.mockMvc
+//                .perform(get("/words/{id}/create")
+//                        .param("wordRequest", "wordRequest"))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("word/create"))
+//                .andExpect(model().attributeExists("tags"))
+//                .andExpect(model().attributeExists("errors"));
+//    }
 
     @Test
     void getUpdateWord() {
