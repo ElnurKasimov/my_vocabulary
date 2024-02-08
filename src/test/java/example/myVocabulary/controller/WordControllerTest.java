@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -76,6 +76,7 @@ class WordControllerTest {
                 .andExpect(model().attributeExists("word"))
                 .andExpect(model().attribute("words", hasSize(1)))
                 .andExpect(model().attribute("words", contains(mockWord)));
+        verify(wordService, times(1)).readByWordPart("es");
     }
 
     @Test
@@ -103,6 +104,7 @@ class WordControllerTest {
                 .andExpect(model().attributeExists("word"))
                 .andExpect(model().attribute("words", hasSize(1)))
                 .andExpect(model().attribute("words", contains(mockWord)));
+        verify(wordService, times(1)).readByWordPart("ест");
     }
 
 
