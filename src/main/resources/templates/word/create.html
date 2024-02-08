@@ -9,7 +9,19 @@
          .word_table_container {
             overflow-y: auto;
             max-height: 69vh;
-        }
+         }
+         .tag_paragraph {
+            font-size: 30px;
+            color: #666;
+         }
+         .tag_paragraph a {
+            text-decoration: none;
+            color: gray;
+            transition: color 0.3s;
+         }
+        .tag_paragraph a:hover {
+            color: #0099ff;
+         }
     </style>
     <script th:inline="javascript">
         /*<![CDATA[*/
@@ -65,7 +77,10 @@
             </form>
         </div>
         <div class="section_right_for_word" th:if="${tag}">
-            <p style="font-size: 30px; color: #666;">All words with tag <b>'<span th:text="${tag.name}"></span>'</b></p>
+            <p class="tag_paragraph">All words with tag <b>
+                <a th:href="@{/tags/{tagId}(tagId=${tag.id})}" th:text="'\'' + ${tag.name} + '\''"></a>
+                </b>
+            </p>
             <div class="word_table_container" id="word_table_container">
                 <table style="width : 100%">
                     <tr>
