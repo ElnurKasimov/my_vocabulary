@@ -70,16 +70,6 @@ public class WordServiceImpl implements WordService {
     }
 
     @Override
-    public Word readByForeignWord(String foreignWord) {
-        return null;
-    }
-
-    @Override
-    public Word readByTranslation(String translation) {
-        return null;
-    }
-
-    @Override
     public List<Word> readByWordPart(String wordPart) {
         return wordRepository.findByWordPart(wordPart);
     }

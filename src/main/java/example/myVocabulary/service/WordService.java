@@ -11,8 +11,6 @@ public interface WordService {
     void delete(long id);
     List<Word> getAll();
     List<Word> getTenRandom();
-    Word readByForeignWord(String foreignWord);
-    Word readByTranslation(String translation);
     List<Word> readByWordPart(String wordPart);
     
 }
