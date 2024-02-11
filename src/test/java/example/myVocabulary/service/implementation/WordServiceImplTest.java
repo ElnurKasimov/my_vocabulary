@@ -23,7 +23,7 @@ class WordServiceImplTest {
     TagServiceImpl tagService;
 
     @Test
-    @DisplayName("Test that update word.tag reflects in tag.words")
+    @DisplayName("Test that updating word.tag reflects in tag.words")
     @Commit
     void update() {
         // there is starting population in migrations
@@ -38,10 +38,16 @@ class WordServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test that deleting word reflects in tag.words")
     void delete() {
+        // there is starting population in migrations
+        List<Word> actualList = wordService.readByWordPart("consist");
+        Word actualWord = actualList.get(0);
+        wordService.delete(actualWord.getId());
+        entityManager.flush();
+        Tag actualTag = tagService.readByName("Sales");
+        assertEquals(1L, actualTag.getWords().size());
+        assertFalse(actualTag.getWords().contains(actualWord));
     }
 
-    @Test
-    void readByWordPart() {
-    }
 }
