@@ -1,9 +1,11 @@
 package example.myVocabulary.controller;
 
+import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class WordControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private EntityManager entityManager;
 
     @MockBean
     private WordService wordService;
@@ -31,14 +35,32 @@ class WordControllerTest {
     @MockBean
     private TagService tagService;
 
+//    @Autowired
+//    private WordTransformer wordTransformer;
+
     @Test
     @DisplayName("Test that GET  /words/  works correctly")
     void getAllWords() throws Exception {
+        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
+        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
+        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag1);
+        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag1);
+        Word mockWord3 = new Word(3L, "word3", "слово3", "", mockTag2);
+        Word mockWord4 = new Word(4L, "word4", "слово4", "", mockTag2);
+        List<Word> expected = new ArrayList<>();
+        expected.add(mockWord1);
+        expected.add(mockWord2);
+        expected.add(mockWord3);
+        expected.add(mockWord4);
+        when(wordService.getAll()).thenReturn(expected);
         this.mockMvc
                 .perform(get("/words/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/list"))
-                .andExpect(model().attributeExists("words"));
+                .andExpect(model().attributeExists("words"))
+                .andExpect(model().attribute("words", hasSize(4)));
+//                .andExpect(model().attribute("words", contains(wordTransformer.fromEntityForCRUD(mockWord3))));
+        verify(wordService, times(1)).getAll();
     }
 
     @Test
