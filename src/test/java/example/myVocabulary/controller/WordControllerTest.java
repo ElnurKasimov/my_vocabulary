@@ -26,17 +26,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class WordControllerTest {
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private EntityManager entityManager;
+//    @Autowired
+//    private EntityManager entityManager;
 
     @MockBean
     private WordService wordService;
 
     @MockBean
     private TagService tagService;
-
-//    @Autowired
-//    private WordTransformer wordTransformer;
 
     @Test
     @DisplayName("Test that GET  /words/  works correctly")
@@ -59,7 +56,6 @@ class WordControllerTest {
                 .andExpect(view().name("word/list"))
                 .andExpect(model().attributeExists("words"))
                 .andExpect(model().attribute("words", hasSize(4)));
-//                .andExpect(model().attribute("words", contains(wordTransformer.fromEntityForCRUD(mockWord3))));
         verify(wordService, times(1)).getAll();
     }
 
@@ -76,15 +72,8 @@ class WordControllerTest {
     @Test
     @DisplayName("Test that POST  /words/find  works correctly and finds among foreign words")
     void postFindWordAmongForeign() throws Exception {
-        Tag mockTag = new Tag();
-        mockTag.setId(1L);
-        mockTag.setName("tag1");
-        Word mockWord = new Word();
-        mockWord.setId(1L);
-        mockWord.setForeignWord("test");
-        mockWord.setTranslationWord("тест");
-        mockWord.setDescription("testing process");
-        mockWord.setTag(mockTag);
+        Tag mockTag = new Tag(1L, "tag1", new ArrayList<>());
+        Word mockWord = new Word(1L, "test", "тест", "testing process", mockTag);
         List<Word> expected = new ArrayList<>();
         expected.add(mockWord);
         when(wordService.readByWordPart("es")).thenReturn(expected);
@@ -104,15 +93,8 @@ class WordControllerTest {
     @Test
     @DisplayName("Test that POST  /words/find  works correctly and finds among translations")
     void postFindWordAmongTranslations() throws Exception {
-        Tag mockTag = new Tag();
-        mockTag.setId(1L);
-        mockTag.setName("tag1");
-        Word mockWord = new Word();
-        mockWord.setId(1L);
-        mockWord.setForeignWord("test");
-        mockWord.setTranslationWord("тест");
-        mockWord.setDescription("testing process");
-        mockWord.setTag(mockTag);
+        Tag mockTag = new Tag(1L, "tag1", new ArrayList<>());
+        Word mockWord = new Word(1L, "test", "тест", "testing process", mockTag);
         List<Word> expected = new ArrayList<>();
         expected.add(mockWord);
         when(wordService.readByWordPart("ест")).thenReturn(expected);
@@ -128,7 +110,6 @@ class WordControllerTest {
                 .andExpect(model().attribute("words", contains(mockWord)));
         verify(wordService, times(1)).readByWordPart("ест");
     }
-
 
     //TODO  cover 'create' with mocks
     @Test
