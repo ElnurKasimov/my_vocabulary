@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter @Setter
 @NoArgsConstructor
 public class TagResponse {
@@ -18,5 +20,18 @@ public class TagResponse {
     public TagResponse(Tag tag) {
         id = tag.getId();
         name = tag.getName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TagResponse that = (TagResponse) o;
+        return id == that.id && Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

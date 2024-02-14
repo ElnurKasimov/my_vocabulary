@@ -1,5 +1,8 @@
 package example.myVocabulary.controller;
 
+import example.myVocabulary.dto.TagResponse;
+import example.myVocabulary.dto.TagTransformer;
+import example.myVocabulary.dto.WordResponseForCRUD;
 import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
@@ -14,7 +17,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -26,8 +32,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class WordControllerTest {
     @Autowired
     private MockMvc mockMvc;
-//    @Autowired
-//    private EntityManager entityManager;
+
+    @Autowired
+    WordTransformer wordTransformer;
+
+    @Autowired
+    TagTransformer tagTransformer;
 
     @MockBean
     private WordService wordService;
@@ -44,18 +54,22 @@ class WordControllerTest {
         Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag1);
         Word mockWord3 = new Word(3L, "word3", "слово3", "", mockTag2);
         Word mockWord4 = new Word(4L, "word4", "слово4", "", mockTag2);
-        List<Word> expected = new ArrayList<>();
-        expected.add(mockWord1);
-        expected.add(mockWord2);
-        expected.add(mockWord3);
-        expected.add(mockWord4);
-        when(wordService.getAll()).thenReturn(expected);
+        List<Word> words = new ArrayList<>();
+        words.add(mockWord1);
+        words.add(mockWord2);
+        words.add(mockWord3);
+        words.add(mockWord4);
+        when(wordService.getAll()).thenReturn(words);
+        List<WordResponseForCRUD> expected = words.stream()
+                .map(wordTransformer::fromEntityForCRUD)
+                .toList();
         this.mockMvc
                 .perform(get("/words/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/list"))
                 .andExpect(model().attributeExists("words"))
-                .andExpect(model().attribute("words", hasSize(4)));
+                .andExpect(model().attribute("words", hasSize(4)))
+                .andExpect(model().attribute("words", equalTo(expected)));
         verify(wordService, times(1)).getAll();
     }
 
@@ -115,12 +129,25 @@ class WordControllerTest {
     @Test
     @DisplayName("Test that GET  /words/create  works correctly")
     void getCreatedWord() throws Exception {
+        List<Tag> tags = new ArrayList<>();
+        Tag tag1 = new Tag(1L, "tag1", new ArrayList<>());
+        Tag tag2 = new Tag(2L, "tag2", new ArrayList<>());
+        tags.add(tag1);
+        tags.add(tag2);
+        when(tagService.getAll()).thenReturn(tags);
+        List<TagResponse> mockTags = tags
+                .stream()
+                .map(tagTransformer::fromEntity)
+                .toList();
         this.mockMvc
                 .perform(get("/words/create"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/create"))
                 .andExpect(model().attributeExists("tags"))
-                .andExpect(model().attributeExists("wordRequest"));
+                .andExpect(model().attributeExists("wordRequest"))
+                .andExpect(model().attribute("tags", hasSize(2)))
+                .andExpect(model().attribute("tags", equalTo(mockTags)));
+        verify(tagService, times(1)).getAll();
     }
 
     @Test
