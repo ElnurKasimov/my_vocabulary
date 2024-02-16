@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Entity
 @Table(name="words")
 @NoArgsConstructor
@@ -75,4 +77,16 @@ public class Word {
         this.tag = tag;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Word word = (Word) o;
+        return id == word.id && Objects.equals(foreignWord, word.foreignWord) && Objects.equals(translationWord, word.translationWord) && Objects.equals(description, word.description) && Objects.equals(tag, word.tag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, foreignWord, translationWord, description, tag);
+    }
 }

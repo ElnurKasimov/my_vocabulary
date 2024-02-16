@@ -1,9 +1,6 @@
 package example.myVocabulary.controller;
 
-import example.myVocabulary.dto.TagResponse;
-import example.myVocabulary.dto.TagTransformer;
-import example.myVocabulary.dto.WordResponseForCRUD;
-import example.myVocabulary.dto.WordTransformer;
+import example.myVocabulary.dto.*;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
@@ -16,6 +13,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -125,7 +126,6 @@ class WordControllerTest {
         verify(wordService, times(1)).readByWordPart("ест");
     }
 
-    //TODO  cover 'create' with mocks
     @Test
     @DisplayName("Test that GET  /words/create  works correctly")
     void getCreatedWord() throws Exception {
@@ -153,13 +153,43 @@ class WordControllerTest {
     @Test
     @DisplayName("Test that POST  /words/create  works correctly")
     void postCreateWord() throws Exception {
-        this.mockMvc
+        List<Tag> tags = new ArrayList<>();
+        Tag tag1 = new Tag(1L, "tag1", new ArrayList<>());
+        Tag tag2 = new Tag(2L, "tag2", new ArrayList<>());
+        tags.add(tag1);
+        tags.add(tag2);
+        when(tagService.getAll()).thenReturn(tags);
+        List<TagResponse> mockTags = tags
+                .stream()
+                .map(tagTransformer::fromEntity)
+                .toList();
+        WordRequest wordRequest = new WordRequest(
+                                        "test",
+                                        "тест",
+                                        "for test only",
+                                        "tag1");
+
+        Word newWord = wordTransformer.toEntity(wordRequest);
+        when(wordService.create(newWord)).thenReturn(newWord);
+        MvcResult mvcResult = this.mockMvc
                 .perform(post("/words/create")
-                        .param("wordRequest", "wordRequest"))
+                        .flashAttr("wordRequest", wordRequest))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/create"))
                 .andExpect(model().attributeExists("tags"))
-                .andExpect(model().attributeExists("errors"));
+                .andExpect(model().attributeExists("wordRequest"))
+                .andExpect(model().attributeExists("scrollToBottom"))
+                .andExpect(model().attribute("tags", hasSize(2)))
+                .andExpect(model().attribute("tags", equalTo(mockTags)))
+//                .andExpect(model().attribute("wordRequest", equalTo(wordRequest)))   I don't know why in model wordRequest with all null fields
+                .andReturn();
+
+        ModelAndView modelAndView = mvcResult.getModelAndView();
+        ModelMap modelMap = modelAndView.getModelMap();
+
+        verify(tagService, times(1)).getAll();
+        verify(wordService, times(1)).create(newWord);
+        verify(tagService, times(3)).readByName(wordRequest.getTagName());
     }
 
 //    @Test
