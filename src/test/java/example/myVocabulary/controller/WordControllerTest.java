@@ -181,7 +181,8 @@ class WordControllerTest {
                 .andExpect(model().attributeExists("scrollToBottom"))
                 .andExpect(model().attribute("tags", hasSize(2)))
                 .andExpect(model().attribute("tags", equalTo(mockTags)))
-//                .andExpect(model().attribute("wordRequest", equalTo(wordRequest)))   I don't know why in model wordRequest with all null fields
+//                .andExpect(model().attribute("wordRequest", equalTo(wordRequest)))
+//          I don't know why there is wordRequest with all null fields in the model
                 .andReturn();
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
@@ -192,17 +193,26 @@ class WordControllerTest {
         verify(tagService, times(3)).readByName(wordRequest.getTagName());
     }
 
-//    @Test
-//    @DisplayName("Test that GET  /words/{id}/delete works correctly")
-//    void getDeleteWord() throws Exception {
-//        this.mockMvc
-//                .perform(get("/words/{id}/create")
-//                        .param("wordRequest", "wordRequest"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("word/create"))
-//                .andExpect(model().attributeExists("tags"))
-//                .andExpect(model().attributeExists("errors"));
-//    }
+    @Test
+    @DisplayName("Test that GET  /words/{id}/delete works correctly")
+    void getDeleteWord() throws Exception {
+        Tag mockTag = new Tag(1L, "mockTag", new ArrayList<>());
+        Word mockWord = new Word(1L, "test",
+                "тест", "for test only", mockTag);
+        when(wordService.readById(mockWord.getId())).thenReturn(mockWord);
+        when(tagService.readById(mockWord.getTag().getId())).thenReturn(mockTag);
+        this.mockMvc
+                .perform(get("/words/{id}/delete", 1L))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tag/tag-words"))
+                .andExpect(model().attributeExists("tagName"))
+                .andExpect(model().attributeExists("words"));
+        verify(wordService, times(1)).readById(mockWord.getId());
+        verify(wordService, times(1)).delete(mockWord.getId());
+        verify(tagService, times(1)).readById(mockTag.getId());
+
+        //TODO check corectness of deleting
+    }
 
     @Test
     void getUpdateWord() {
