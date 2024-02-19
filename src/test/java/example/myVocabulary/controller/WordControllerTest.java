@@ -5,7 +5,6 @@ import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.hamcrest.Matchers.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -182,7 +176,7 @@ class WordControllerTest {
                 .andExpect(model().attribute("tags", hasSize(2)))
                 .andExpect(model().attribute("tags", equalTo(mockTags)))
 //                .andExpect(model().attribute("wordRequest", equalTo(wordRequest)))
-//          I don't know why there is wordRequest with all null fields in the model
+//          I don't understand why there is wordRequest with all null fields in the model
                 .andReturn();
 
         ModelAndView modelAndView = mvcResult.getModelAndView();
@@ -211,14 +205,39 @@ class WordControllerTest {
         verify(wordService, times(1)).delete(mockWord.getId());
         verify(tagService, times(1)).readById(mockTag.getId());
 
-        //TODO check corectness of deleting
+        // TODO find out with:
+//        MyList myList = mock(MyList.class);//
+//        ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
+//        doNothing().when(myList).add(any(Integer.class), valueCapture.capture());//
+//        myList.add(0, "captured");//
+//        assertEquals("captured", valueCapture.getValue());
     }
 
     @Test
-    void getUpdateWord() {
+    @DisplayName("Test that GET  /words/{id}/update works correctly")
+    void getUpdateWord() throws Exception {
+        Tag mockTag1 = new Tag(1L, "mockTag1", new ArrayList<>());
+        Tag mockTag2 = new Tag(2L, "mockTag2", new ArrayList<>());
+        List<Tag> tags = new ArrayList<>();
+        tags.add(mockTag1);
+        tags.add(mockTag2);
+        when(tagService.getAll()).thenReturn(tags);
+        Word mockWord = new Word(1L, "test",
+                "тест", "for test only", mockTag1);
+        when(wordService.readById(1)).thenReturn(mockWord);
+        this.mockMvc
+                .perform(get("/words/{id}/update", 1L))
+                .andExpect(status().isOk())
+                .andExpect(view().name("word/update"))
+                .andExpect(model().attributeExists("tags"))
+                .andExpect(model().attributeExists("word"));
+        verify(wordService, times(1)).readById(mockWord.getId());
+        verify(tagService, times(1)).getAll();
     }
 
     @Test
+    @DisplayName("Test that POST  /words/{id}/update works correctly")
     void postUpdateWord() {
+
     }
 }
