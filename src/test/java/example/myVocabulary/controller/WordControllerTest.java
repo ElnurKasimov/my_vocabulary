@@ -18,6 +18,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -251,30 +253,25 @@ class WordControllerTest {
         words.add(beforeUpdate);
         mockTag.setWords(words);
         WordRequest wordRequest = new WordRequest(
-                "after",
-                "после",
-                "for test only",
-                "mockTag");
-
+                "after", "после", "for test only", "mockTag");
         when(tagService.readByName("mockTag")).thenReturn(mockTag);
         Word afterUpdate = wordTransformer.toEntity(wordRequest);
         afterUpdate.setId(1L);
-
-        when(wordService.update(beforeUpdate)).thenReturn(afterUpdate);
-
-        MvcResult mvcResult = this.mockMvc
+        when(wordService.update(afterUpdate)).thenReturn(afterUpdate);
+        List<WordResponseForCRUD> wordsActual = mockTag.getWords().stream()
+                .map(wordTransformer::fromEntityForCRUD)
+                .toList();
+        this.mockMvc
                 .perform(post("/words/{id}/update", 1L)
                         .flashAttr("wordRequest", wordRequest))
-                .andReturn();
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("tag/ag-words"))
-//                .andExpect(model().attributeExists("tag"))
-//                .andExpect(model().attributeExists("tagName"))
-//                .andExpect(model().attributeExists("words"))
-//                .andExpect(model().attribute("tag", equalTo(mockTag)))
-//                .andExpect(model().attribute("tagName", equalTo(mockTag.getName())))
-//                .andExpect(model().attribute("words",equalTo(mockTag.getWords())))
-
-        verify(wordService, times(1)).update(beforeUpdate);
+                .andExpect(status().isOk())
+                .andExpect(view().name("tag/tag-words"))
+                .andExpect(model().attributeExists("tag"))
+                .andExpect(model().attributeExists("tagName"))
+                .andExpect(model().attributeExists("words"))
+                .andExpect(model().attribute("tag", equalTo(mockTag)))
+                .andExpect(model().attribute("tagName", equalTo(mockTag.getName())))
+                .andExpect(model().attribute("words",equalTo(wordsActual)));
+        verify(wordService, times(1)).update(afterUpdate);
     }
 }
