@@ -7,6 +7,7 @@ import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -190,9 +192,12 @@ class WordControllerTest {
     @Test
     @DisplayName("Test that GET  /words/{id}/delete works correctly")
     void getDeleteWord() throws Exception {
-        Tag mockTag = new Tag(1L, "mockTag", new ArrayList<>());
+        List<Word> words = new ArrayList<>();
+        Tag mockTag = new Tag(1L, "mockTag",words);
         Word mockWord = new Word(1L, "test",
                 "тест", "for test only", mockTag);
+        words.add(mockWord);
+        mockTag.setWords(words);
         when(wordService.readById(mockWord.getId())).thenReturn(mockWord);
         when(tagService.readById(mockWord.getTag().getId())).thenReturn(mockTag);
         this.mockMvc
@@ -200,17 +205,15 @@ class WordControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("tag/tag-words"))
                 .andExpect(model().attributeExists("tagName"))
-                .andExpect(model().attributeExists("words"));
+                .andExpect(model().attributeExists("words"))
+                .andExpect(model().attribute("tagName",equalTo(mockTag.getName())))
+                .andExpect(model().attribute("words",equalTo(mockTag.getWords())));
+        ArgumentCaptor<Long> valueCapture = ArgumentCaptor.forClass(Long.class);
+        doNothing().when(wordService).delete(valueCapture.capture());
+        assertEquals(1L,mockWord.getId());
         verify(wordService, times(1)).readById(mockWord.getId());
         verify(wordService, times(1)).delete(mockWord.getId());
         verify(tagService, times(1)).readById(mockTag.getId());
-
-        // TODO find out with:
-//        MyList myList = mock(MyList.class);//
-//        ArgumentCaptor<String> valueCapture = ArgumentCaptor.forClass(String.class);
-//        doNothing().when(myList).add(any(Integer.class), valueCapture.capture());//
-//        myList.add(0, "captured");//
-//        assertEquals("captured", valueCapture.getValue());
     }
 
     @Test
@@ -230,14 +233,48 @@ class WordControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/update"))
                 .andExpect(model().attributeExists("tags"))
-                .andExpect(model().attributeExists("word"));
+                .andExpect(model().attributeExists("word"))
+                .andExpect(model().attribute("tags", hasSize(2)))
+                .andExpect(model().attribute("tags", equalTo(tags)))
+                .andExpect(model().attribute("word", equalTo(mockWord)));
         verify(wordService, times(1)).readById(mockWord.getId());
         verify(tagService, times(1)).getAll();
     }
 
     @Test
     @DisplayName("Test that POST  /words/{id}/update works correctly")
-    void postUpdateWord() {
+    void postUpdateWord() throws Exception {
+        List<Word> words = new ArrayList<>();
+        Tag mockTag = new Tag(1L, "mockTag",words);
+        Word beforeUpdate = new Word(1L, "before",
+                "до", "for test only", mockTag);
+        words.add(beforeUpdate);
+        mockTag.setWords(words);
+        WordRequest wordRequest = new WordRequest(
+                "after",
+                "после",
+                "for test only",
+                "mockTag");
 
+        when(tagService.readByName("mockTag")).thenReturn(mockTag);
+        Word afterUpdate = wordTransformer.toEntity(wordRequest);
+        afterUpdate.setId(1L);
+
+        when(wordService.update(beforeUpdate)).thenReturn(afterUpdate);
+
+        MvcResult mvcResult = this.mockMvc
+                .perform(post("/words/{id}/update", 1L)
+                        .flashAttr("wordRequest", wordRequest))
+                .andReturn();
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("tag/ag-words"))
+//                .andExpect(model().attributeExists("tag"))
+//                .andExpect(model().attributeExists("tagName"))
+//                .andExpect(model().attributeExists("words"))
+//                .andExpect(model().attribute("tag", equalTo(mockTag)))
+//                .andExpect(model().attribute("tagName", equalTo(mockTag.getName())))
+//                .andExpect(model().attribute("words",equalTo(mockTag.getWords())))
+
+        verify(wordService, times(1)).update(beforeUpdate);
     }
 }
