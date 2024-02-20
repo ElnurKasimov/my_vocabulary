@@ -166,9 +166,9 @@ class WordControllerTest {
                                         "тест",
                                         "for test only",
                                         "tag1");
-
         Word newWord = wordTransformer.toEntity(wordRequest);
         when(wordService.create(newWord)).thenReturn(newWord);
+        // MvcResult is introduced for debug purposes for checking what does model contain
         MvcResult mvcResult = this.mockMvc
                 .perform(post("/words/create")
                         .flashAttr("wordRequest", wordRequest))
@@ -179,13 +179,13 @@ class WordControllerTest {
                 .andExpect(model().attributeExists("scrollToBottom"))
                 .andExpect(model().attribute("tags", hasSize(2)))
                 .andExpect(model().attribute("tags", equalTo(mockTags)))
-//                .andExpect(model().attribute("wordRequest", equalTo(wordRequest)))
-//          I don't understand why there is wordRequest with all null fields in the model
+                .andExpect(model().attribute("wordRequest", equalTo(new WordRequest())))
                 .andReturn();
-
         ModelAndView modelAndView = mvcResult.getModelAndView();
         ModelMap modelMap = modelAndView.getModelMap();
-
+        ArgumentCaptor<Word> valueCapture = ArgumentCaptor.forClass(Word.class);
+        verify(wordService).create(valueCapture.capture());
+        assertEquals(newWord,valueCapture.getValue());
         verify(tagService, times(1)).getAll();
         verify(wordService, times(1)).create(newWord);
         verify(tagService, times(3)).readByName(wordRequest.getTagName());
