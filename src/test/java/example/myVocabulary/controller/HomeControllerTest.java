@@ -32,7 +32,7 @@ class HomeControllerTest {
                 .andExpect(view().name("home"))
                 .andExpect(model().attributeExists("tags", "words"))   ;
 
-        verify(tagService,times(1)).getTenRandom()
+        verify(tagService,times(1)).getTenRandom();
     }
 
     @Test
@@ -40,4 +40,6 @@ class HomeControllerTest {
     void getHomeSlash() {
 
     }
+
+    //TODO join all of the tests in one parametrized test
 }
