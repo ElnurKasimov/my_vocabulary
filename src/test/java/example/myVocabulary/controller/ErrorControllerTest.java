@@ -8,14 +8,17 @@ class ErrorControllerTest {
 
     @Test
     void notFound() {
+
     }
 
     @Test
     void internal() {
+
     }
 
     @Test
     void accessDenied() {
+
     }
 
     //TODO join all of the tests in one parametrized test
