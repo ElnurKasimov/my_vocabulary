@@ -94,9 +94,7 @@ class WordControllerTest {
                         .param("wordPart", "es"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/find"))
-                .andExpect(model().attributeExists("searchPerformed"))
-                .andExpect(model().attributeExists("words"))
-                .andExpect(model().attributeExists("word"))
+                .andExpect(model().attributeExists("searchPerformed", "words", "word"))
                 .andExpect(model().attribute("words", hasSize(1)))
                 .andExpect(model().attribute("words", contains(mockWord)));
         verify(wordService, times(1)).readByWordPart("es");
@@ -115,9 +113,7 @@ class WordControllerTest {
                         .param("wordPart", "ест"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/find"))
-                .andExpect(model().attributeExists("searchPerformed"))
-                .andExpect(model().attributeExists("words"))
-                .andExpect(model().attributeExists("word"))
+                .andExpect(model().attributeExists("searchPerformed", "words", "word"))
                 .andExpect(model().attribute("words", hasSize(1)))
                 .andExpect(model().attribute("words", contains(mockWord)));
         verify(wordService, times(1)).readByWordPart("ест");
@@ -140,8 +136,7 @@ class WordControllerTest {
                 .perform(get("/words/create"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/create"))
-                .andExpect(model().attributeExists("tags"))
-                .andExpect(model().attributeExists("wordRequest"))
+                .andExpect(model().attributeExists("tags", "wordRequest"))
                 .andExpect(model().attribute("tags", hasSize(2)))
                 .andExpect(model().attribute("tags", equalTo(mockTags)));
         verify(tagService, times(1)).getAll();
@@ -173,9 +168,7 @@ class WordControllerTest {
                         .flashAttr("wordRequest", wordRequest))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/create"))
-                .andExpect(model().attributeExists("tags"))
-                .andExpect(model().attributeExists("wordRequest"))
-                .andExpect(model().attributeExists("scrollToBottom"))
+                .andExpect(model().attributeExists("tags", "wordRequest", "scrollToBottom"))
                 .andExpect(model().attribute("tags", hasSize(2)))
                 .andExpect(model().attribute("tags", equalTo(mockTags)))
                 .andExpect(model().attribute("wordRequest", equalTo(new WordRequest())))
@@ -205,8 +198,7 @@ class WordControllerTest {
                 .perform(get("/words/{id}/delete", 1L))
                 .andExpect(status().isOk())
                 .andExpect(view().name("tag/tag-words"))
-                .andExpect(model().attributeExists("tagName"))
-                .andExpect(model().attributeExists("words"))
+                .andExpect(model().attributeExists("tagName", "words"))
                 .andExpect(model().attribute("tagName",equalTo(mockTag.getName())))
                 .andExpect(model().attribute("words",equalTo(mockTag.getWords())));
         ArgumentCaptor<Long> valueCapture = ArgumentCaptor.forClass(Long.class);
@@ -233,8 +225,7 @@ class WordControllerTest {
                 .perform(get("/words/{id}/update", 1L))
                 .andExpect(status().isOk())
                 .andExpect(view().name("word/update"))
-                .andExpect(model().attributeExists("tags"))
-                .andExpect(model().attributeExists("word"))
+                .andExpect(model().attributeExists("tags", "word"))
                 .andExpect(model().attribute("tags", hasSize(2)))
                 .andExpect(model().attribute("tags", equalTo(tags)))
                 .andExpect(model().attribute("word", equalTo(mockWord)));
@@ -265,9 +256,7 @@ class WordControllerTest {
                         .flashAttr("wordRequest", wordRequest))
                 .andExpect(status().isOk())
                 .andExpect(view().name("tag/tag-words"))
-                .andExpect(model().attributeExists("tag"))
-                .andExpect(model().attributeExists("tagName"))
-                .andExpect(model().attributeExists("words"))
+                .andExpect(model().attributeExists("tag", "tagName","words"))
                 .andExpect(model().attribute("tag", equalTo(mockTag)))
                 .andExpect(model().attribute("tagName", equalTo(mockTag.getName())))
                 .andExpect(model().attribute("words",equalTo(wordsActual)));
