@@ -13,13 +13,17 @@ import java.util.Objects;
 
 @Getter @Setter
 @NoArgsConstructor
-public class TagResponse {
+public class TagResponse implements Comparable<TagResponse>  {
     private long id;
     private String name;
 
     public TagResponse(Tag tag) {
         id = tag.getId();
         name = tag.getName();
+    }
+
+    public int compareTo(TagResponse other) {
+        return this.name.compareTo(other.name);
     }
 
     @Override

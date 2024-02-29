@@ -57,7 +57,9 @@ public class WordController {
         List<TagResponse> tags = tagService.getAll().stream()
                         .map(tagTransformer::fromEntity)
                         .toList();
-        model.addAttribute("tags",tags);
+        List<TagResponse> sortedTags = new ArrayList<>(tags);
+        Collections.sort(sortedTags);
+        model.addAttribute("tags",sortedTags);
         model.addAttribute("wordRequest", new WordRequest());
         return "word/create";
     }
@@ -70,6 +72,8 @@ public class WordController {
             List<TagResponse> tags = tagService.getAll().stream()
                     .map(tagTransformer::fromEntity)
                     .toList();
+            List<TagResponse> sortedTags = new ArrayList<>(tags);
+            Collections.sort(sortedTags);
             model.addAttribute("tags",tags);
             return "word/create";
         }
@@ -80,8 +84,9 @@ public class WordController {
         List<TagResponse> tags = tagService.getAll().stream()
                 .map(tagTransformer::fromEntity)
                 .toList();
-
-        model.addAttribute("tags",tags);
+        List<TagResponse> sortedTags = new ArrayList<>(tags);
+        Collections.sort(sortedTags);
+        model.addAttribute("tags",sortedTags);
         model.addAttribute("wordRequest", new WordRequest());
         model.addAttribute("scrollToBottom", true);
         return "word/create";
@@ -99,10 +104,11 @@ public class WordController {
         return "tag/tag-words";
     }
 
-
     @GetMapping(value = {"/{id}/update"})
     public String getUpdateWord(@PathVariable (name = "id") long id, Model model) {
-        model.addAttribute("tags",tagService.getAll());
+        List<Tag> tags = tagService.getAll();
+        Collections.sort(tags);
+        model.addAttribute("tags",tags);
         model.addAttribute("word", wordService.readById(id));
         return "word/update";
     }
