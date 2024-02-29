@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,9 @@ public class TagController {
     @GetMapping(value = {"/"})
     public String getAllTags(@ModelAttribute(name = "errorId") Object errorId, Model model) {
         model.addAttribute("errorId", errorId);
-        model.addAttribute("tags", tagService.getAll());
+        List<Tag> tags = tagService.getAll();
+        Collections.sort(tags);
+        model.addAttribute("tags", tags);
         return "tag/tag-list";
     }
 

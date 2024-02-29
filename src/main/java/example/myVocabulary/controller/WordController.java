@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,6 +80,7 @@ public class WordController {
         List<TagResponse> tags = tagService.getAll().stream()
                 .map(tagTransformer::fromEntity)
                 .toList();
+
         model.addAttribute("tags",tags);
         model.addAttribute("wordRequest", new WordRequest());
         model.addAttribute("scrollToBottom", true);
@@ -111,7 +113,9 @@ public class WordController {
                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
-            model.addAttribute("tags",tagService.getAll());
+            List<Tag> tags = tagService.getAll();
+            Collections.sort(tags);
+            model.addAttribute("tags",tags);
             return "word/update";
         }
         Word toUpdate = wordTransformer.toEntity(wordRequest);
