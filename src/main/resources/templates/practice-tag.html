@@ -9,12 +9,26 @@
            overflow-y: auto;
            max-height: 70vh;
        }
+        .tag_paragraph {
+            font-size: 30px;
+            color: #666;
+         }
+         .tag_paragraph a {
+            text-decoration: none;
+            color: gray;
+            transition: color 0.3s;
+         }
+        .tag_paragraph a:hover {
+            color: #0099ff;
+         }
     </style>
 </head>
 <body>
     <div th:replace="~{header :: header}"></div>
-    <p style="font-size: 25px; color: #666;">
-        Practice for tag <b>'<span th:text="${tag.name}"></span>'</b>:
+    <p class="tag_paragraph">
+        Practice for tag <b>
+        <a th:href="@{/tags/{tagId}(tagId=${tag.id})}" th:text="'\'' + ${tag.name} + '\''"></a>
+        </b>
     </p>
 
         <table th:if="${not #lists.isEmpty(words)}" style ="width : 100%">
