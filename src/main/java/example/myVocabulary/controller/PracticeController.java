@@ -1,9 +1,6 @@
 package example.myVocabulary.controller;
 
-import example.myVocabulary.dto.TagRequest;
-import example.myVocabulary.dto.TagTransformer;
-import example.myVocabulary.dto.WordResponseForCRUD;
-import example.myVocabulary.dto.WordTransformer;
+import example.myVocabulary.dto.*;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
@@ -36,6 +33,7 @@ public class PracticeController {
         model.addAttribute("tags",
         tagService.getAll( ).stream()
                 .map(tagTransformer::fromEntity)
+                .sorted()
                 .collect(Collectors.toList()));
     return "practice-home";
     }
@@ -81,10 +79,10 @@ public class PracticeController {
             model.addAttribute("translation",translation);
             model.addAttribute("description", description);
         }
-        model.addAttribute("tags",
-                tagService.getAll( ).stream()
-                        .map(tagTransformer::fromEntity)
-                        .collect(Collectors.toList()));
+        model.addAttribute("tags",tagService.getAll().stream()
+                .map(tagTransformer::fromEntity)
+                .sorted()
+                .collect(Collectors.toList()));
         redirectAttributes.addFlashAttribute("translateDirection", translateDirection);
         session.setAttribute("words", toPractice);
         return "practice-tag";
@@ -111,6 +109,7 @@ public class PracticeController {
         model.addAttribute("tags",
                 tagService.getAll( ).stream()
                         .map(tagTransformer::fromEntity)
+                        .sorted()
                         .collect(Collectors.toList()));
         model.addAttribute("rowNumber", rowNumber);
         return "practice-tag";
