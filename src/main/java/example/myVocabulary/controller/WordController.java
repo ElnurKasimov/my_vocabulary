@@ -131,6 +131,7 @@ public class WordController {
         model.addAttribute("tagName", updatedWord.getTag().getName());
         model.addAttribute("words", updatedWord.getTag().getWords().stream()
                         .map(wordTransformer::fromEntityForCRUD)
+                        .sorted()
                         .collect(Collectors.toList()));
         return "tag/tag-words";
     }
