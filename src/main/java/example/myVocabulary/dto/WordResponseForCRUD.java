@@ -8,7 +8,7 @@ import java.util.Objects;
 
 
 @Getter
-public class WordResponseForCRUD {
+public class WordResponseForCRUD implements Comparable<WordResponseForCRUD> {
     private long id;
     private String foreignWord;
     private String translationWord;
@@ -21,6 +21,10 @@ public class WordResponseForCRUD {
         translationWord = word.getTranslationWord();
         description = word.getDescription();
         tagName = word.getTag().getName();
+    }
+
+    public int compareTo(WordResponseForCRUD other) {
+        return this.foreignWord.compareTo(other.foreignWord);
     }
 
     @Override
