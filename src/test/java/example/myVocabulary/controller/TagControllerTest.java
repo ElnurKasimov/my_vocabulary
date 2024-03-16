@@ -66,7 +66,31 @@ class TagControllerTest {
 
 
     @Test
+    @DisplayName("Test that POST /tags/  works correctly")
     void getTag() {
+        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
+        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
+        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag1);
+        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag1);
+        Word mockWord3 = new Word(3L, "word3", "слово3", "", mockTag2);
+        Word mockWord4 = new Word(4L, "word4", "слово4", "", mockTag2);
+        List<Word> words = new ArrayList<>();
+        words.add(mockWord1);
+        words.add(mockWord2);
+        words.add(mockWord3);
+        words.add(mockWord4);
+//    when(wordService.getAll()).thenReturn(words);
+//    List<WordResponseForCRUD> expected = words.stream()
+//            .map(wordTransformer::fromEntityForCRUD)
+//            .toList();
+//    this.mockMvc
+//            .perform(get("/words/"))
+//            .andExpect(status().isOk())
+//            .andExpect(view().name("word/list"))
+//            .andExpect(model().attributeExists("words"))
+//            .andExpect(model().attribute("words", hasSize(4)))
+//            .andExpect(model().attribute("words", equalTo(expected)));
+//    verify(wordService, times(1)).getAll();
     }
 
     @Test
