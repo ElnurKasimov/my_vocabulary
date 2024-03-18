@@ -1,6 +1,7 @@
 package example.myVocabulary.controller;
 
 import example.myVocabulary.dto.WordResponseForCRUD;
+import example.myVocabulary.dto.WordTransformer;
 import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
@@ -36,65 +37,66 @@ class TagControllerTest {
     @MockBean
     private WordService wordService;
 
+    @Autowired
+    private WordTransformer wordTransformer;
+
     @Test
     @DisplayName("Test that GET  /tags/  works correctly")
     void getAllTags() throws Exception {
         Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
         Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
-        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag1);
-        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag1);
-        Word mockWord3 = new Word(3L, "word3", "слово3", "", mockTag2);
-        Word mockWord4 = new Word(4L, "word4", "слово4", "", mockTag2);
-        List<Word> words = new ArrayList<>();
-        words.add(mockWord1);
-        words.add(mockWord2);
-        words.add(mockWord3);
-        words.add(mockWord4);
-//        when(wordService.getAll()).thenReturn(words);
-//        List<WordResponseForCRUD> expected = words.stream()
-//                .map(wordTransformer::fromEntityForCRUD)
-//                .toList();
-//        this.mockMvc
-//                .perform(get("/words/"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("word/list"))
-//                .andExpect(model().attributeExists("words"))
-//                .andExpect(model().attribute("words", hasSize(4)))
-//                .andExpect(model().attribute("words", equalTo(expected)));
-//        verify(wordService, times(1)).getAll();
+        List<Tag> tags = new ArrayList<>();
+        tags.add(mockTag1);
+        tags.add(mockTag2);
+        when(tagService.getAll()).thenReturn(tags);
+        this.mockMvc
+                .perform(get("/tags/"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tag/tag-list"))
+                .andExpect(model().attributeExists("tags", "errorId"))
+                .andExpect(model().attribute("tags", hasSize(2)))
+                .andExpect(model().attribute("tags", equalTo(tags)));
+        verify(tagService, times(1)).getAll();
     }
 
 
     @Test
-    @DisplayName("Test that POST /tags/  works correctly")
-    void getTag() {
-        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
-        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
-        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag1);
-        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag1);
-        Word mockWord3 = new Word(3L, "word3", "слово3", "", mockTag2);
-        Word mockWord4 = new Word(4L, "word4", "слово4", "", mockTag2);
+    @DisplayName("Test that GET /tags/{id}  works correctly")
+    void getTag() throws Exception {
+        Tag mockTag = new Tag(1L, "tag1", new ArrayList<>());
+        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag);
+        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag);
         List<Word> words = new ArrayList<>();
         words.add(mockWord1);
         words.add(mockWord2);
-        words.add(mockWord3);
-        words.add(mockWord4);
-//    when(wordService.getAll()).thenReturn(words);
-//    List<WordResponseForCRUD> expected = words.stream()
-//            .map(wordTransformer::fromEntityForCRUD)
-//            .toList();
-//    this.mockMvc
-//            .perform(get("/words/"))
-//            .andExpect(status().isOk())
-//            .andExpect(view().name("word/list"))
-//            .andExpect(model().attributeExists("words"))
-//            .andExpect(model().attribute("words", hasSize(4)))
-//            .andExpect(model().attribute("words", equalTo(expected)));
-//    verify(wordService, times(1)).getAll();
+        mockTag.setWords(words);
+        when(tagService.readById(1)).thenReturn(mockTag);
+        List<WordResponseForCRUD> expected = words.stream()
+            .map(wordTransformer::fromEntityForCRUD)
+            .sorted()
+            .toList();
+        this.mockMvc
+            .perform(get("/tags/{id}", 1L))
+            .andExpect(status().isOk())
+            .andExpect(view().name("tag/tag-words"))
+            .andExpect(model().attributeExists("words", "tagName"))
+            .andExpect(model().attribute("words", hasSize(2)))
+            .andExpect(model().attribute("words", equalTo(expected)))
+            .andExpect(model().attribute("tagName", "tag1"));
+        verify(tagService, times(1)).readById(1L);
     }
 
     @Test
+    @DisplayName("Test that GET /tags/create  works correctly")
     void getCreateTag() {
+        Tag mockTag = new Tag(1L, "tag1", new ArrayList<>());
+        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag);
+        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag);
+        List<Word> words = new ArrayList<>();
+        words.add(mockWord1);
+        words.add(mockWord2);
+        mockTag.setWords(words);
+        when(tagService.readById(1)).thenReturn(mockTag);
     }
 
     @Test
