@@ -74,7 +74,7 @@ class PracticeControllerTest {
     @DisplayName("Test that POST  /practice/  works correctly")
     void postInfoForPractice() throws Exception {
         Tag mockTag1 = new Tag(1L, "mockTag1", new ArrayList<>());
-        when(tagService.readByName("mockTag1")).thenReturn(mockTag1);
+        when(tagService.create(newTag)).thenReturn(mockTag1);
         mockMvc.perform(post("/practice/")
                         .param("tagName", "mockTag1")
                         .param("translateDirection","translateDirection"))
