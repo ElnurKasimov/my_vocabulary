@@ -77,7 +77,7 @@ public class TagController {
         }
     }
     @GetMapping(value = {"/{id}/delete"})
-    public String postDeleteTag(@PathVariable (name = "id") long id,  Model model,
+    public String getDeleteTag(@PathVariable (name = "id") long id,  Model model,
                                 RedirectAttributes redirectAttributes) {
         if (tagService.readById(id).getWords().isEmpty()) {
             tagService.delete(id);

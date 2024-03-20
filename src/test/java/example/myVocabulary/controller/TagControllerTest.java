@@ -7,6 +7,7 @@ import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +17,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -120,18 +120,52 @@ class TagControllerTest {
         TagRequest tagRequest = new TagRequest();
         tagRequest.setName("mockTag");
         Tag mockTag = tagTransformer.toEntityFromRequest(tagRequest);
-//        when(tagService.readByName("mockTag")).thenReturn(mockTag);
-        mockMvc.perform(post("/tags/create")
-                        .param("tagRequest", String.valueOf(tagRequest)))
-                .andExpect(status().is3xxRedirection())
-//                .andExpect(flash().attribute("translateDirection", "translateDirection"))
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/tags/create/1"));
-        verify(tagService, times(1)).readByName("mockTag1");
+        mockTag.setId(1L);
+        when(tagService.create(any())).thenReturn(mockTag);
 
+        mockMvc.perform(post("/tags/create")
+                        .flashAttr("tagRequest", tagRequest))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/tags/1"));
+        verify(tagService, times(1)).create(any());
     }
 
     @Test
-    void postDeleteTag() {
+    @DisplayName("Test that GET /tags/{id}/delete  works correctly with empty field words")
+    void postDeleteTagWithoutWords() throws Exception {
+        Tag mockTag = new Tag(1L, "tag", new ArrayList<>());
+        when(tagService.readById(1L)).thenReturn(mockTag);
+        this.mockMvc
+                .perform(get("/tags/{id}/delete", 1L))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/tags/"))
+                .andExpect(flash().attributeCount(0));
+        ArgumentCaptor<Long> valueCapture = ArgumentCaptor.forClass(Long.class);
+        doNothing().when(tagService).delete(valueCapture.capture());
+        assertEquals(1L,mockTag.getId());
+    }
+
+    @Test
+    @DisplayName("Test that GET /tags/{id}/delete  works correctly with nonempty field words")
+    void postDeleteTagWithWords() throws Exception {
+        Tag mockTag = new Tag(1L, "tag", new ArrayList<>());
+        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag);
+        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag);
+        List<Word> words = new ArrayList<>();
+        words.add(mockWord1);
+        words.add(mockWord2);
+        mockTag.setWords(words);
+        when(tagService.readById(1L)).thenReturn(mockTag);
+        int i = 1;
+        this.mockMvc
+                .perform(get("/tags/{id}/delete", 1L))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/tags/"))
+                .andExpect(flash().attributeExists("errorId"))
+                .andExpect(flash().attribute("errorId", 1L));
+        ArgumentCaptor<Long> valueCapture = ArgumentCaptor.forClass(Long.class);
+        doNothing().when(tagService).delete(valueCapture.capture());
+        assertEquals(1L,mockTag.getId());
     }
 
     @Test
