@@ -5,6 +5,7 @@ import example.myVocabulary.model.Tag;
 import example.myVocabulary.model.Word;
 import example.myVocabulary.service.TagService;
 import example.myVocabulary.service.WordService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -14,9 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -45,14 +48,22 @@ class TagControllerTest {
     @Autowired
     private TagTransformer tagTransformer;
 
+    private static List<Tag> tags = new ArrayList<>();
+
+
+
+    @BeforeAll
+    private static void initTags() {
+        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
+        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
+        tags.add(mockTag1);
+        tags.add(mockTag2);
+    }
+
+
     @Test
     @DisplayName("Test that GET  /tags/  works correctly")
     void getAllTags() throws Exception {
-        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
-        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
-        List<Tag> tags = new ArrayList<>();
-        tags.add(mockTag1);
-        tags.add(mockTag2);
         when(tagService.getAll()).thenReturn(tags);
         this.mockMvc
                 .perform(get("/tags/"))
@@ -94,11 +105,6 @@ class TagControllerTest {
     @Test
     @DisplayName("Test that GET /tags/create  works correctly")
     void getCreateTag() throws Exception {
-        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
-        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
-        List<Tag> tags = new ArrayList<>();
-        tags.add(mockTag1);
-        tags.add(mockTag2);
         when(tagService.getAll()).thenReturn(tags);
         List<TagResponse> tagsResponse = tags.stream()
                 .map(tagTransformer::fromEntity)
@@ -169,10 +175,57 @@ class TagControllerTest {
     }
 
     @Test
-    void getUpdateTag() {
+    @DisplayName("Test that GET /tags/{id}/update  works correctly")
+    void getUpdateTag() throws Exception {
+        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
+        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
+        List<Tag> tags = new ArrayList<>();
+        tags.add(mockTag1);
+        tags.add(mockTag2);
+        when(tagService.readById(1L)).thenReturn(mockTag1);
+        when(tagService.getAll()).thenReturn(tags);
+        List<TagResponse> tagResponses = tags.stream()
+                .map(tagTransformer::fromEntity)
+                .collect(Collectors.toList());
+        this.mockMvc
+                .perform(get("/tags/{id}/update",1L))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tag/update"))
+                .andExpect(model().attributeExists("tag", "tags"))
+                .andExpect(model().attribute("tag", mockTag1))
+                .andExpect(model().attribute("tags",equalTo(tagResponses)));
+        verify(tagService, times(1)).readById(1L);
+        verify(tagService, times(1)).getAll();
     }
 
     @Test
-    void postUpdateTag() {
+    @DisplayName("Test that GET /tags/{id}/update  works correctly")
+    void postUpdateTag() throws Exception {
+        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
+        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
+        List<Tag> tags = new ArrayList<>();
+        tags.add(mockTag1);
+        tags.add(mockTag2);
+        when(tagService.readById(1L)).thenReturn(mockTag1);
+        when(tagService.getAll()).thenReturn(tags);
+        Tag mockTag = new Tag(1L, "tag", new ArrayList<>());
+        BindingResult result = mock(BindingResult.class);
+        when(result.hasErrors()).thenReturn(true);
+        List<String> errors = new ArrayList<>();
+        errors.add("error1");
+        errors.add("error2");
+        when(tagService.getTagErrors(mockTag.getName(),result)).thenReturn(errors);
+        List<TagResponse> tagResponses = tags.stream()
+                .map(tagTransformer::fromEntity)
+                .collect(Collectors.toList());
+        this.mockMvc
+                .perform(get("/tags/{id}/update",1L))
+                .andExpect(status().isOk())
+                .andExpect(view().name("tag/update"))
+                .andExpect(model().attributeExists("errors", "tags"))
+                .andExpect(model().attribute("errors", equalTo(errors)))
+                .andExpect(model().attribute("tags",equalTo(tagResponses)));
+        verify(tagService, times(1)).readById(1L);
+        verify(tagService, times(1)).getAll();
     }
 }
