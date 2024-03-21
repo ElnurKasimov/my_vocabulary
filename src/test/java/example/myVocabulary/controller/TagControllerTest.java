@@ -48,14 +48,26 @@ class TagControllerTest {
     @Autowired
     private TagTransformer tagTransformer;
 
+    private static Tag mockTag1;
+    private static Tag mockTag2;
     private static List<Tag> tags = new ArrayList<>();
 
-
+    private static List<String> errors = new ArrayList<>();
 
     @BeforeAll
     private static void initTags() {
-        Tag mockTag1 = new Tag(1L, "tag1", new ArrayList<>());
-        Tag mockTag2 = new Tag(2L, "tag2", new ArrayList<>());
+        List<Word> words1 = new ArrayList<>();
+        List<Word> words2 = new ArrayList<>();
+        mockTag1 = new Tag(1L, "tag1", words1);
+        mockTag2 = new Tag(2L, "tag2", words2);
+        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag1);
+        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag1);
+        Word mockWord3 = new Word(1L, "word1", "слово3", "", mockTag2);
+        Word mockWord4 = new Word(2L, "word2", "слово4", "", mockTag2);
+        words1.add(mockWord1);
+        words1.add(mockWord2);
+        words2.add(mockWord3);
+        words2.add(mockWord4);
         tags.add(mockTag1);
         tags.add(mockTag2);
     }
@@ -79,15 +91,8 @@ class TagControllerTest {
     @Test
     @DisplayName("Test that GET /tags/{id}  works correctly")
     void getTag() throws Exception {
-        Tag mockTag = new Tag(1L, "tag1", new ArrayList<>());
-        Word mockWord1 = new Word(1L, "word1", "слово1", "", mockTag);
-        Word mockWord2 = new Word(2L, "word2", "слово2", "", mockTag);
-        List<Word> words = new ArrayList<>();
-        words.add(mockWord1);
-        words.add(mockWord2);
-        mockTag.setWords(words);
-        when(tagService.readById(1)).thenReturn(mockTag);
-        List<WordResponseForCRUD> expected = words.stream()
+        when(tagService.readById(1)).thenReturn(mockTag1);
+        List<WordResponseForCRUD> expected = mockTag1.getWords().stream()
             .map(wordTransformer::fromEntityForCRUD)
             .sorted()
             .toList();
@@ -121,20 +126,51 @@ class TagControllerTest {
     }
 
     @Test
-    @DisplayName("Test that POST /tags/create  works correctly")
-    void postCreateTag() throws Exception {
+    @DisplayName("Test that POST /tags/create  works correctly with valid data")
+    void postCreateTagCorrect() throws Exception {
         TagRequest tagRequest = new TagRequest();
         tagRequest.setName("mockTag");
         Tag mockTag = tagTransformer.toEntityFromRequest(tagRequest);
         mockTag.setId(1L);
         when(tagService.create(any())).thenReturn(mockTag);
-
+        BindingResult result = mock(BindingResult.class);
+        when(tagService.getTagErrors(mockTag.getName(),result)).thenReturn(errors);
         mockMvc.perform(post("/tags/create")
                         .flashAttr("tagRequest", tagRequest))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/tags/1"));
         verify(tagService, times(1)).create(any());
     }
+
+    @Test
+    @DisplayName("Test that POST /tags/create  works correctly with invalid data")
+    void postCreateTagIncorrect() throws Exception {
+        TagRequest tagRequest = new TagRequest();
+        tagRequest.setName("name");
+        Tag mockTag = tagTransformer.toEntityFromRequest(tagRequest);
+        mockTag.setId(1L);
+        when(tagService.create(any())).thenReturn(mockTag);
+        BindingResult result = mock(BindingResult.class);
+//        when(result.hasErrors()).thenReturn(true);
+        errors.add("error1");
+        errors.add("error2");
+        when(tagService.getTagErrors(tagRequest.getName(),result)).thenReturn(errors);
+        List<TagResponse> tagResponses = tags.stream()
+                .map(tagTransformer::fromEntity)
+                .toList();
+        mockMvc.perform(post("/tags/create")
+                        .flashAttr("tagRequest", tagRequest)
+                        .flashAttr("bindingResult", result))
+                .andExpect(status().is3xxRedirection())
+//                .andExpect(view().name("/tag/create"))
+                .andExpect(model().attributeExists("errors", "tags"))
+                .andExpect(model().attribute("errors", equalTo(errors)))
+                .andExpect(model().attribute("tags",equalTo(tagResponses)));
+        verify(tagService, times(1)).create(any());
+        verify(tagService, times(1)).getAll();
+    }
+
+
 
     @Test
     @DisplayName("Test that GET /tags/{id}/delete  works correctly with empty field words")
@@ -162,7 +198,6 @@ class TagControllerTest {
         words.add(mockWord2);
         mockTag.setWords(words);
         when(tagService.readById(1L)).thenReturn(mockTag);
-        int i = 1;
         this.mockMvc
                 .perform(get("/tags/{id}/delete", 1L))
                 .andExpect(status().is3xxRedirection())
@@ -210,7 +245,7 @@ class TagControllerTest {
         when(tagService.getAll()).thenReturn(tags);
         Tag mockTag = new Tag(1L, "tag", new ArrayList<>());
         BindingResult result = mock(BindingResult.class);
-        when(result.hasErrors()).thenReturn(true);
+//        when(result.hasErrors()).thenReturn(true);
         List<String> errors = new ArrayList<>();
         errors.add("error1");
         errors.add("error2");
