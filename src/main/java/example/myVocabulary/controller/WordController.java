@@ -55,10 +55,9 @@ public class WordController {
     public String getCreatedWord(Model model) {
         List<TagResponse> tags = tagService.getAll().stream()
                         .map(tagTransformer::fromEntity)
+                        .sorted()
                         .toList();
-        List<TagResponse> sortedTags = new ArrayList<>(tags);
-        Collections.sort(sortedTags);
-        model.addAttribute("tags",sortedTags);
+        model.addAttribute("tags",tags);
         model.addAttribute("wordRequest", new WordRequest());
         return "word/create";
     }
@@ -70,10 +69,9 @@ public class WordController {
             model.addAttribute("errors", bindingResult.getAllErrors());
             List<TagResponse> tags = tagService.getAll().stream()
                     .map(tagTransformer::fromEntity)
+                    .sorted()
                     .toList();
-            List<TagResponse> sortedTags = new ArrayList<>(tags);
-            Collections.sort(sortedTags);
-            model.addAttribute("tags",sortedTags);
+            model.addAttribute("tags",tags);
             return "word/create";
         }
         Word newWord = wordTransformer.toEntity(wordRequest);
@@ -82,10 +80,11 @@ public class WordController {
         model.addAttribute("tag", tag);
         List<TagResponse> tags = tagService.getAll().stream()
                 .map(tagTransformer::fromEntity)
+                .sorted()
                 .toList();
-        List<TagResponse> sortedTags = new ArrayList<>(tags);
-        Collections.sort(sortedTags);
-        model.addAttribute("tags",sortedTags);
+//        List<TagResponse> sortedTags = new ArrayList<>(tags);
+//        Collections.sort(sortedTags);
+        model.addAttribute("tags",tags);
         model.addAttribute("wordRequest", new WordRequest());
         model.addAttribute("scrollToBottom", true);
         return "word/create";
@@ -115,8 +114,6 @@ public class WordController {
                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
-//            List<Tag> tags = tagService.getAll();
-//            Collections.sort(tags);
             model.addAttribute("tags",tagService.getAll().stream().sorted().toList());
             return "word/update";
         }
