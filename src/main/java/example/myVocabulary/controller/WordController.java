@@ -104,8 +104,6 @@ public class WordController {
 
     @GetMapping(value = {"/{id}/update"})
     public String getUpdateWord(@PathVariable (name = "id") long id, Model model) {
-//        List<Tag> tags = tagService.getAll();
-//        Collections.sort(tags);
         model.addAttribute("tags",tagService.getAll().stream().sorted().toList());
         model.addAttribute("word", wordService.readById(id));
         return "word/update";
@@ -117,21 +115,19 @@ public class WordController {
                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
-            List<Tag> tags = tagService.getAll();
-            Collections.sort(tags);
-            model.addAttribute("tags",tags);
+//            List<Tag> tags = tagService.getAll();
+//            Collections.sort(tags);
+            model.addAttribute("tags",tagService.getAll().stream().sorted().toList());
             return "word/update";
         }
         Word toUpdate = wordTransformer.toEntity(wordRequest);
         toUpdate.setId(id);
         Word updatedWord = wordService.update(toUpdate);
         model.addAttribute("tag",updatedWord.getTag());
-
         model.addAttribute("tagName", updatedWord.getTag().getName());
         model.addAttribute("words", updatedWord.getTag().getWords().stream()
                         .map(wordTransformer::fromEntityForCRUD)
-                        .sorted()
-                        .toList());
+                        .sorted().toList());
         return "tag/tag-words";
     }
 }
