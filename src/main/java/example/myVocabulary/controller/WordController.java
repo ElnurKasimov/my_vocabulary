@@ -97,17 +97,16 @@ public class WordController {
         long tagId = wordToDelete.getTag().getId();
         wordService.delete(id);
         Tag tag = tagService.readById(tagId);
-        model.addAttribute("words", tag.getWords()
-        );
+        model.addAttribute("words", tag.getWords().stream().sorted().toList());
         model.addAttribute("tagName", tag.getName());
         return "tag/tag-words";
     }
 
     @GetMapping(value = {"/{id}/update"})
     public String getUpdateWord(@PathVariable (name = "id") long id, Model model) {
-        List<Tag> tags = tagService.getAll();
-        Collections.sort(tags);
-        model.addAttribute("tags",tags);
+//        List<Tag> tags = tagService.getAll();
+//        Collections.sort(tags);
+        model.addAttribute("tags",tagService.getAll().stream().sorted().toList());
         model.addAttribute("word", wordService.readById(id));
         return "word/update";
     }
@@ -132,7 +131,7 @@ public class WordController {
         model.addAttribute("words", updatedWord.getTag().getWords().stream()
                         .map(wordTransformer::fromEntityForCRUD)
                         .sorted()
-                        .collect(Collectors.toList()));
+                        .toList());
         return "tag/tag-words";
     }
 }

@@ -16,7 +16,7 @@ import java.util.Objects;
 @Table(name="words")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Word {
+public class Word implements Comparable<Word> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -88,5 +88,10 @@ public class Word {
     @Override
     public int hashCode() {
         return Objects.hash(id, foreignWord, translationWord, description, tag);
+    }
+
+    @Override
+    public int compareTo(Word other) {
+        return this.foreignWord.compareTo(other.foreignWord);
     }
 }
