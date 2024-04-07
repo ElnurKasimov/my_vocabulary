@@ -150,6 +150,7 @@ class TagControllerTest {
     void postCreateTagIncorrect() throws Exception {
         // I can't find out why even errors isn't empty 'if' in the controller doesn't work
 
+
 //        TagRequest tagRequest = new TagRequest();
 //        tagRequest.setName("tag");
 //        Tag mockTag = tagTransformer.toEntityFromRequest(tagRequest);
