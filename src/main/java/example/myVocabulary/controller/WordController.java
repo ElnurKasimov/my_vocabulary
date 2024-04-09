@@ -82,8 +82,6 @@ public class WordController {
                 .map(tagTransformer::fromEntity)
                 .sorted()
                 .toList();
-//        List<TagResponse> sortedTags = new ArrayList<>(tags);
-//        Collections.sort(sortedTags);
         model.addAttribute("tags",tags);
         model.addAttribute("wordRequest", new WordRequest());
         model.addAttribute("scrollToBottom", true);
